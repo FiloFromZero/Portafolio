@@ -1,0 +1,69 @@
+<section class="experience-section" id="experience" @fadeInUp>
+  <div class="section-container">
+    
+    <h2 class="section-title"
+        appScrollReveal
+        revealAnimation="fade-up"
+        [revealDelay]="0">
+      <span>01.</span> EXPERIENCIA &amp; TRAYECTORIA
+    </h2>
+
+    <p class="section-subtitle"
+       appScrollReveal
+       revealAnimation="fade-up"
+       [revealDelay]="100">
+      Trayectoria técnica construyendo plataformas robustas, infraestructura cloud y arquitecturas de alto rendimiento.
+    </p>
+
+    <!-- Timeline Container -->
+    <div class="timeline-container">
+      
+      <div class="timeline-item" *ngFor="let exp of experiences; let i = index"
+           appScrollReveal
+           revealAnimation="fade-left"
+           [revealDelay]="i * 120">
+        
+        <!-- Timeline Marker / Node -->
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-line" *ngIf="i < experiences.length - 1"></div>
+        </div>
+
+        <!-- Experience Content Card -->
+        <div class="timeline-content glass-panel" appMouseFollow>
+          
+          <div class="card-header">
+            <div class="header-main">
+              <span class="period font-mono">{{ exp.period }}</span>
+              <span class="badge" *ngIf="exp.badge">{{ exp.badge }}</span>
+            </div>
+            <span class="location font-mono">{{ exp.location }}</span>
+          </div>
+
+          <h3 class="role-title">{{ exp.role }}</h3>
+          <h4 class="company-name font-mono">{{ exp.company }}</h4>
+
+          <p class="experience-desc">{{ exp.description }}</p>
+
+          <!-- Key Highlights / Achievements -->
+          <ul class="highlights-list">
+            <li *ngFor="let hl of exp.highlights">
+              <span class="hl-bullet">▹</span>
+              <span class="hl-text">{{ hl }}</span>
+            </li>
+          </ul>
+
+          <!-- Tech Stack Tags -->
+          <div class="tech-stack">
+            <span class="badge-gray" *ngFor="let tech of exp.technologies">{{ tech }}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+

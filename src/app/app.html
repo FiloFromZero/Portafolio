@@ -1,0 +1,130 @@
+<!-- Dynamic Particle Background -->
+<app-particle-canvas></app-particle-canvas>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" [style.transform]="'scaleX(' + scrollProgress() + ')'" aria-hidden="true"></div>
+
+<!-- Top Navigation Header -->
+<header class="hud-header" [class.is-scrolled]="isHeaderScrolled()">
+  <div class="hud-container">
+    <!-- Desktop Nav (Centered) -->
+    <nav class="hud-nav desktop-only">
+      <a href="#hero" class="nav-link" [class.active]="activeSection() === 'hero'" (click)="scrollTo('hero', $event)">Inicio</a>
+      <a href="#experience" class="nav-link" [class.active]="activeSection() === 'experience'" (click)="scrollTo('experience', $event)">Experiencia</a>
+      <a href="#tech-stack" class="nav-link" [class.active]="activeSection() === 'tech-stack'" (click)="scrollTo('tech-stack', $event)">Stack</a>
+      <a href="#education" class="nav-link" [class.active]="activeSection() === 'education'" (click)="scrollTo('education', $event)">Estudios</a>
+      <a href="#projects" class="nav-link" [class.active]="activeSection() === 'projects'" (click)="scrollTo('projects', $event)">Proyectos</a>
+    </nav>
+    
+    <div class="hud-actions">
+      <!-- Theme Switch Button -->
+      <button class="theme-toggle-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? 'Activar modo oscuro' : 'Activar modo claro'">
+        <!-- Sun Icon (Active when Light Theme) -->
+        <svg *ngIf="isLightTheme()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon sun">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="M4.93 4.93l1.41 1.41"></path>
+          <path d="M17.66 17.66l1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="M6.34 17.66l-1.41 1.41"></path>
+          <path d="M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <!-- Moon Icon (Active when Dark Theme) -->
+        <svg *ngIf="!isLightTheme()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon moon">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+
+      <!-- Hamburger Button (Mobile Only) -->
+      <button 
+        class="hamburger-btn mobile-only" 
+        [class.open]="isMobileMenuOpen()" 
+        (click)="toggleMobileMenu()"
+        aria-label="Alternar menú de navegación"
+      >
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-backdrop" *ngIf="isMobileMenuOpen()" (click)="closeMobileMenu()"></div>
+  <nav class="mobile-nav-drawer glass-panel" [class.open]="isMobileMenuOpen()">
+    <a href="#hero" class="mobile-nav-link" [class.active]="activeSection() === 'hero'" (click)="scrollTo('hero', $event)">
+      <span>00.</span> Inicio
+    </a>
+    <a href="#experience" class="mobile-nav-link" [class.active]="activeSection() === 'experience'" (click)="scrollTo('experience', $event)">
+      <span>01.</span> Experiencia
+    </a>
+    <a href="#tech-stack" class="mobile-nav-link" [class.active]="activeSection() === 'tech-stack'" (click)="scrollTo('tech-stack', $event)">
+      <span>02.</span> Stack Tecnológico
+    </a>
+    <a href="#education" class="mobile-nav-link" [class.active]="activeSection() === 'education'" (click)="scrollTo('education', $event)">
+      <span>03.</span> Estudios &amp; Certificaciones
+    </a>
+    <a href="#projects" class="mobile-nav-link" [class.active]="activeSection() === 'projects'" (click)="scrollTo('projects', $event)">
+      <span>04.</span> Proyectos
+    </a>
+  </nav>
+</header>
+
+<!-- Main Wrapper -->
+<main class="portfolio-container">
+  <app-hero id="hero"></app-hero>
+  <div class="section-divider"></div>
+  <app-experience id="experience"></app-experience>
+  <div class="section-divider"></div>
+  <app-tech-stack id="tech-stack"></app-tech-stack>
+  <div class="section-divider"></div>
+  <app-education id="education"></app-education>
+  <div class="section-divider"></div>
+  <app-projects id="projects"></app-projects>
+</main>
+
+<!-- Rich Aesthetic Footer -->
+<footer class="hud-footer">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-logo">MATEO MONTOYA</span>
+        <p class="footer-tagline">Desarrollador Full-Stack &amp; Cloud Specialist</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#hero" (click)="scrollTo('hero', $event)">Inicio</a>
+        <a href="#experience" (click)="scrollTo('experience', $event)">Experiencia</a>
+        <a href="#tech-stack" (click)="scrollTo('tech-stack', $event)">Stack</a>
+        <a href="#education" (click)="scrollTo('education', $event)">Estudios</a>
+        <a href="#projects" (click)="scrollTo('projects', $event)">Proyectos</a>
+      </div>
+
+      <div class="footer-socials">
+        <a href="https://github.com/FiloFromZero" target="_blank" aria-label="GitHub" class="social-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/mateo-montoya-269998248" target="_blank" aria-label="LinkedIn" class="social-icon-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
+        </a>
+        <button class="back-to-top-btn" (click)="scrollTo('hero', $event)" aria-label="Volver arriba" title="Volver al inicio">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        &copy; 2026 Mateo M. Diseñado y construido con Angular &amp; TypeScript.
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,79 @@
+<section class="hero-section" @fadeInUp>
+  <div class="hero-container">
+    <!-- Profile Avatar Container -->
+    <div class="hero-avatar-container" appMagnetic
+         appScrollReveal revealAnimation="zoom-in" [revealDelay]="0">
+      <div class="avatar-inner-wrap">
+        <img
+          src="images/PERFIL_800.webp"
+          srcset="images/PERFIL_800.webp 800w"
+          sizes="420px"
+          alt="Mateo Montoya"
+          class="hero-avatar"
+          width="800"
+          height="800"
+          fetchpriority="high"
+          decoding="async"
+        >
+      </div>
+    </div>
+
+    <!-- Name directly under Avatar -->
+    <h2 class="hero-name"
+        appScrollReveal revealAnimation="fade-up" [revealDelay]="50">
+      MATEO MONTOYA <span class="name-dot" aria-hidden="true"></span>
+    </h2>
+    <h1 class="hero-title"
+        appScrollReveal revealAnimation="fade-up" [revealDelay]="80">
+      Desarrollador Full-Stack <br>
+      <span class="text-gradient">&amp; Cloud Specialist</span>
+    </h1>
+    
+    <p class="hero-lead text-secondary"
+       appScrollReveal revealAnimation="fade-up" [revealDelay]="180">
+      Hola, soy Mateo. Diseño servicios web robustos y escalables, optimizo bases de datos espaciales y automatizo infraestructura Cloud con IaC.
+    </p>
+
+    <!-- Core Stacks Highlight Grid -->
+    <div class="hero-highlights font-mono"
+         appScrollReveal revealAnimation="fade-up" [revealDelay]="280">
+      <span class="highlight-pill">
+        <span class="pill-dot"></span> Java &amp; Spring Boot
+      </span>
+      <span class="highlight-pill">
+        <span class="pill-dot"></span> Node.js &amp; Angular
+      </span>
+      <span class="highlight-pill">
+        <span class="pill-dot"></span> PostgreSQL &amp; Docker
+      </span>
+      <span class="highlight-pill">
+        <span class="pill-dot"></span> AWS &amp; Terraform IaC
+      </span>
+    </div>
+    
+    <div class="hero-actions"
+         appScrollReveal revealAnimation="fade-up" [revealDelay]="380">
+      <a href="Documents/Hoja%20de%20vida%202026.pdf" download="Hoja de vida 2026 - Daniel Mateo Montoya.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary" appMagnetic>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Descargar CV</span>
+      </a>
+      <a href="https://github.com/FiloFromZero" target="_blank" rel="noopener noreferrer" class="btn-secondary" appMagnetic>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <a href="https://www.linkedin.com/in/mateo-montoya-269998248" target="_blank" rel="noopener noreferrer" class="btn-secondary btn-linkedin" appMagnetic>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+        <span>LinkedIn</span>
+      </a>
+    </div>
+  </div>
+</section>
+

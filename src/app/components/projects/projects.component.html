@@ -1,0 +1,236 @@
+<section class="projects-section" id="projects">
+  <div class="section-container">
+    
+    <h2 class="section-title"
+        appScrollReveal
+        revealAnimation="fade-up"
+        [revealDelay]="0">
+      <span>04.</span> PROYECTOS &amp; DESARROLLOS
+    </h2>
+    
+    <!-- Gallery Grid -->
+    <div class="projects-grid">
+      <div class="project-card glass-panel" *ngFor="let project of projects; let i = index"
+           appScrollReveal
+           revealAnimation="zoom-in"
+           [revealDelay]="i * 90"
+           appMouseFollow>
+        <div class="project-header">
+          <span class="project-category font-mono">{{ project.category }}</span>
+          <a [href]="project.github" target="_blank" class="github-link" (click)="$event.stopPropagation()">
+            GitHub &nearr;
+          </a>
+        </div>
+        
+        <h3 class="project-title">{{ project.title }}</h3>
+        <p class="project-desc">{{ project.desc }}</p>
+        
+        <!-- Tech Stack Tags -->
+        <div class="project-tech">
+          <span class="badge-gray" *ngFor="let t of project.tech">{{ t }}</span>
+        </div>
+        
+        <!-- Key Metrics Dashboard inside Card -->
+        <div class="project-metrics">
+          <div class="metric-item" *ngFor="let metric of project.metrics">
+            <span class="metric-label">{{ metric.label }}:</span>
+            <span class="metric-value">{{ metric.value }}</span>
+          </div>
+        </div>
+        
+        <!-- Preview Launch Button -->
+        <button class="btn-secondary width-full mt-4 justify-center" (click)="openPreview(project.id)">
+          Ver Detalles &amp; Arquitectura
+        </button>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- Detailed Architecture Pop-up Modal -->
+  <div class="modal-backdrop" *ngIf="activePreviewProjectId" (click)="closePreview()" aria-hidden="true" @fadeInOverlay></div>
+  <div class="modal-wrapper" *ngIf="activePreviewProjectId">
+    <div
+      #previewPane
+      class="preview-card-modal glass-panel"
+      role="dialog"
+      aria-modal="true"
+      tabindex="-1"
+      [attr.aria-label]="'Detalles: ' + (activeProject?.title ?? '')"
+      @popupModal
+    >
+      <!-- Close and Meta -->
+      <div class="pane-header">
+        <div class="pane-meta">
+          <span class="badge font-mono">{{ activeProject?.category }}</span>
+          <h3 class="pane-title">{{ activeProject?.title }}</h3>
+        </div>
+        <button class="btn-close" (click)="closePreview()" aria-label="Cerrar detalles">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="pane-body">
+        
+        <!-- Detailed Tech Specifications -->
+        <div class="project-info-sheet font-sans">
+          
+          <!-- Kata BBOG Details -->
+          <div class="info-block" *ngIf="activePreviewProjectId === 'kata-bbog'">
+            <div class="info-summary">
+              <h4>Descripción del Proyecto</h4>
+              <p>
+                Registro y consulta de clientes en la nube con arquitectura hexagonal, pruebas exhaustivas y ambientes diferenciados (DEV/PROD).
+              </p>
+            </div>
+            
+            <div class="info-details">
+              <div class="detail-card">
+                <span class="detail-title font-mono">ARQUITECTURA Y BACKEND</span>
+                <ul>
+                  <li><strong>Arquitectura Hexagonal (Clean Architecture)</strong> en Java 21 + Spring Boot 3.x.</li>
+                  <li>Persistencia desacoplada con <strong>JPA/PostgreSQL</strong>.</li>
+                  <li>Seguridad por <strong>HTTP Basic Auth</strong> y filtros <strong>JWT</strong>.</li>
+                </ul>
+              </div>
+              <div class="detail-card">
+                <span class="detail-title font-mono">FRONTEND, DEVOPS &amp; CI/CD</span>
+                <ul>
+                  <li>SPA en <strong>Angular 19+</strong> con <strong>Signals</strong> para estado reactivo.</li>
+                  <li><strong>Terraform</strong> en AWS: EC2, PostgreSQL en Docker y S3 para hosting.</li>
+                  <li><strong>GitHub Actions</strong> con perfiles DEV / PROD de extremo a extremo.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cloud Kata Details -->
+          <div class="info-block" *ngIf="activePreviewProjectId === 'cloud-kata'">
+            <div class="info-summary">
+              <h4>Descripción del Proyecto</h4>
+              <p>
+                Procesamiento de aprobaciones jerárquicas en múltiples niveles de autorización para entornos distribuidos en la nube.
+              </p>
+            </div>
+            
+            <div class="info-details">
+              <div class="detail-card">
+                <span class="detail-title font-mono">CONSTRUCCIÓN Y ARQUITECTURA</span>
+                <ul>
+                  <li><strong>Java 21 + Spring Boot</strong> con arquitectura limpia y modular.</li>
+                  <li><strong>Flyway</strong> para migraciones de base de datos reproducibles.</li>
+                  <li><strong>Terraform</strong> para modelar un entorno AWS completo.</li>
+                </ul>
+              </div>
+              <div class="detail-card">
+                <span class="detail-title font-mono">BUENAS PRÁCTICAS &amp; PERSISTENCIA</span>
+                <ul>
+                  <li><strong>Base de Datos Controlada:</strong> esquema PostgreSQL versionado con Flyway.</li>
+                  <li><strong>IaC:</strong> AWS ECS Fargate, ALB y RDS mediante Terraform.</li>
+                  <li><strong>Seguridad:</strong> tokens JWT cifrados y políticas estrictas de IAM.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transmiapp Details -->
+          <div class="info-block" *ngIf="activePreviewProjectId === 'transmiapp'">
+            <div class="info-summary">
+              <h4>Descripción del Proyecto</h4>
+              <p>
+                Motor de geolocalización que calcula rutas óptimas sobre la red de transporte público masivo de Bogotá.
+              </p>
+            </div>
+            
+            <div class="info-details">
+              <div class="detail-card">
+                <span class="detail-title font-mono">CONSTRUCCIÓN Y ARQUITECTURA</span>
+                <ul>
+                  <li>Backend de ruteo en <strong>Node.js y Express</strong> con TypeScript.</li>
+                  <li>Geodatos en <strong>PostgreSQL/PostGIS</strong> con algoritmo <strong>Dijkstra</strong>.</li>
+                  <li>Consultas espaciales nativas para máxima eficiencia.</li>
+                </ul>
+              </div>
+              <div class="detail-card">
+                <span class="detail-title font-mono">BUENAS PRÁCTICAS &amp; PERSISTENCIA</span>
+                <ul>
+                  <li><strong>Indexación GiST:</strong> latencias de ruteo menores a 6ms.</li>
+                  <li><strong>Docker Compose</strong> multi-contenedor con portabilidad total.</li>
+                  <li><strong>Optimización:</strong> delegación de queries al SQL nativo (ST_Distance, ST_DWithin).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- JPII Details -->
+          <div class="info-block" *ngIf="activePreviewProjectId === 'pagina-jpii'">
+            <div class="info-summary">
+              <h4>Descripción del Proyecto</h4>
+              <p>
+                Portal institucional estático de alto tráfico con tiempos de respuesta inmediatos y total compatibilidad SEO.
+              </p>
+            </div>
+            
+            <div class="info-details">
+              <div class="detail-card">
+                <span class="detail-title font-mono">CONSTRUCCIÓN Y ARQUITECTURA</span>
+                <ul>
+                  <li>Generación estática (SSG) con <strong>Astro 4.0</strong>.</li>
+                  <li>HTML/CSS puro pre-renderizado sin scripts JS sobrantes.</li>
+                  <li>Diseño responsivo y semántico bajo normativas <strong>WCAG</strong>.</li>
+                </ul>
+              </div>
+              <div class="detail-card">
+                <span class="detail-title font-mono">BUENAS PRÁCTICAS &amp; PERSISTENCIA</span>
+                <ul>
+                  <li><strong>Rendimiento:</strong> FCP de 0.4s con imágenes .webp y CDN.</li>
+                  <li><strong>Lighthouse 100/100</strong> en rendimiento, accesibilidad y SEO.</li>
+                  <li><strong>CD:</strong> despliegue en borde mediante Netlify Actions.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrum Project Details -->
+          <div class="info-block" *ngIf="activePreviewProjectId === 'scrum-final-project'">
+            <div class="info-summary">
+              <h4>Descripción del Proyecto</h4>
+              <p>
+                Sistema empresarial modular desarrollado bajo metodologías ágiles y diseño desacoplado de software.
+              </p>
+            </div>
+            
+            <div class="info-details">
+              <div class="detail-card">
+                <span class="detail-title font-mono">CONSTRUCCIÓN Y ARQUITECTURA</span>
+                <ul>
+                  <li><strong>Clean Architecture</strong> en 4 capas: Entidades, Casos de Uso, Presentadores e Infraestructura.</li>
+                  <li>Motor de negocio testeable e independiente de frameworks y BD.</li>
+                </ul>
+              </div>
+              <div class="detail-card">
+                <span class="detail-title font-mono">BUENAS PRÁCTICAS &amp; PERSISTENCIA</span>
+                <ul>
+                  <li><strong>CI:</strong> GitHub Actions que valida compilación y pruebas con cada PR.</li>
+                  <li><strong>Cobertura del 94.2%</strong> con JUnit para mitigar regresiones.</li>
+                  <li><strong>Scrum:</strong> sprints completos con puntos de historia y velocidad estable.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-actions mt-5">
+            <a [href]="activeProject?.github" target="_blank" class="btn-primary flex items-center justify-center font-mono">
+              Ver Repositorio Código en GitHub &nearr;
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,177 @@
+.tech-stack-section {
+  position: relative;
+  overflow: hidden;
+
+  // Orbes de luz ambientales flotantes (profundidad)
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+  }
+
+  &::before {
+    width: 400px;
+    height: 400px;
+    top: 5%;
+    left: -140px;
+    background: radial-gradient(circle, rgba(240, 180, 155, 0.08) 0%, transparent 70%);
+    animation: stack-orb-float 17s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    width: 340px;
+    height: 340px;
+    bottom: -80px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(224, 111, 36, 0.06) 0%, transparent 70%);
+    animation: stack-orb-float 21s ease-in-out infinite alternate-reverse;
+  }
+
+  .section-container {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@keyframes stack-orb-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(30px, 20px, 0) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-stack-section::before,
+  .tech-stack-section::after {
+    animation: none;
+  }
+}
+
+.section-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin: -1.5rem auto 3.5rem 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+}
+
+/* Minimalist Tech Grid */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* Minimal Tech Card Design */
+.tech-card-minimal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.75rem;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-normal);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  cursor: pointer;
+
+  // Beam de luz que sigue al cursor (decorativo, definido por appMouseFollow)
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at var(--b-x, 50%) var(--b-y, 50%),
+      var(--accent-primary) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: soft-light;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  // Hover glow effect using local custom variable
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 8px 24px var(--border-glow), 0 0 12px var(--glow-color);
+
+    .tech-icon-wrapper {
+      transform: scale(1.08);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 15px var(--glow-color);
+      color: var(--text-primary);
+    }
+
+    .tech-name {
+      color: var(--text-primary);
+      text-shadow: 0 0 8px var(--border-glow);
+    }
+
+    &::after {
+      opacity: 0.9;
+    }
+  }
+}
+
+/* Tech Icon Container */
+.tech-icon-wrapper {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-normal);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.tech-icon-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Minimalist Tech Name */
+.tech-name {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}

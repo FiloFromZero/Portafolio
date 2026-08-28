@@ -1,0 +1,31 @@
+<section class="tech-stack-section" id="tech-stack">
+  <div class="section-container">
+    
+    <h2 class="section-title"
+        appScrollReveal revealAnimation="fade-up" [revealDelay]="0">
+      <span>02.</span> STACK TECNOLÓGICO
+    </h2>
+    
+    <p class="section-subtitle"
+       appScrollReveal revealAnimation="fade-up" [revealDelay]="100">
+      Tecnologías y herramientas que domino y empleo activamente en mis desarrollos.
+    </p>
+
+    <!-- Minimalistic Tech Grid -->
+    <div class="tech-grid">
+      <div class="tech-card-minimal glass-panel" 
+           *ngFor="let tech of techs; let i = index"
+           [style.--glow-color]="tech.glowColor"
+           appScrollReveal revealAnimation="zoom-in" [revealDelay]="i * 60"
+           appMouseFollow>
+        
+        <div class="tech-icon-wrapper">
+          <img [src]="tech.logoUrl" [alt]="tech.name + ' logo'" class="tech-icon-img" width="26" height="26" loading="lazy" decoding="async">
+        </div>
+
+        <div class="tech-name font-mono">{{ tech.name }}</div>
+      </div>
+    </div>
+
+  </div>
+</section>
