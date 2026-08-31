@@ -146,24 +146,6 @@
     z-index: 2;
   }
 
-  // Beam de luz que sigue al cursor (decorativo, definido por appMouseFollow)
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      circle at var(--b-x, 50%) var(--b-y, 50%),
-      var(--accent-primary) 0%,
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: soft-light;
-  }
-
   > * {
     position: relative;
     z-index: 2;
@@ -176,10 +158,6 @@
 
     &::before {
       opacity: 1;
-    }
-
-    &::after {
-      opacity: 0.9;
     }
   }
 

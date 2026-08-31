@@ -31,7 +31,6 @@ export class ExperienceComponent {
       role: 'Developer Intern',
       company: 'Banco de Bogotá',
       location: 'Bogotá, Colombia',
-      badge: 'Actual',
       description: 'Mantenimiento evolutivo y modernización de plataformas críticas de back-office, implementando arquitecturas modernas y flujos continuos de integración y despliegue.',
       highlights: [
         'Ejecución del mantenimiento evolutivo y estrategia de migración de aplicaciones legacy de Back-Office desarrolladas en Java 11, jQuery y servicios SOAP, garantizando continuidad operativa en Oracle WebLogic.',

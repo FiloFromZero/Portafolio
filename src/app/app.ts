@@ -53,7 +53,12 @@ export class App implements OnInit, OnDestroy {
   private loadSavedTheme(): void {
     if (typeof window === 'undefined') return;
     const saved = localStorage.getItem(THEME_KEY);
-    if (saved === null) return; // Fall back to prefers-color-scheme (handled in CSS)
+    if (saved === null) {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      this.isLightTheme.set(prefersLight);
+      this.applyThemeClass(prefersLight);
+      return;
+    }
     const light = saved === 'light';
     this.isLightTheme.set(light);
     this.applyThemeClass(light);

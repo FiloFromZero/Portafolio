@@ -52,31 +52,6 @@
   --border-light: rgba(45, 36, 30, 0.2);
 }
 
-// Respect system color-scheme preference unless the user has chosen manually (handled by app.ts :root.light-theme)
-@media (prefers-color-scheme: light) {
-  :root:not(.light-theme) {
-    --bg-primary: #faf6f2;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #f1eae3;
-    --bg-card: rgba(255, 255, 255, 0.85);
-    --bg-terminal: #f1eae3;
-
-    --text-primary: #2d241e;
-    --text-secondary: #57483e;
-    --text-muted: #78665a;
-
-    --accent-primary: #cf6e48;
-    --accent-primary-rgb: 207, 110, 72;
-    --accent-light: #b95d38;
-    --accent-light-rgb: 185, 93, 56;
-    --accent-deep: #a84e2b;
-    --accent-dark: #fceee7;
-
-    --border-glow: rgba(207, 110, 72, 0.2);
-    --border-normal: rgba(45, 36, 30, 0.12);
-    --border-light: rgba(45, 36, 30, 0.2);
-  }
-}
 
 // Respect user preference for reduced motion
 @media (prefers-reduced-motion: reduce) {

@@ -115,24 +115,6 @@
     z-index: 2;
   }
 
-  // Beam de luz que sigue al cursor (decorativo, definido por la directiva appMouseFollow)
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      circle at var(--b-x, 50%) var(--b-y, 50%),
-      var(--accent-primary) 0%,
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: soft-light;
-  }
-
   &:hover {
     border-color: var(--accent-primary);
     box-shadow: 0 10px 30px var(--border-glow);
@@ -140,10 +122,6 @@
 
     &::before {
       opacity: 1;
-    }
-
-    &::after {
-      opacity: 0.9;
     }
   }
 }
