@@ -28,7 +28,7 @@ export class ExperienceComponent {
   experiences: ExperienceItem[] = [
     {
       period: '2026 — Julio 2026',
-      role: 'Practicante Empresarial',
+      role: 'Developer Intern',
       company: 'Banco de Bogotá',
       location: 'Bogotá, Colombia',
       badge: 'Actual',
