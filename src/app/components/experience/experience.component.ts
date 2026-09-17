@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { fadeInUp } from '../../shared/animations/animations';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { MouseFollowDirective } from '../../shared/directives/mouse-follow.directive';
@@ -19,7 +19,7 @@ export interface ExperienceItem {
   selector: 'app-experience',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ScrollRevealDirective, MouseFollowDirective],
+  imports: [ ScrollRevealDirective, MouseFollowDirective],
   templateUrl: './experience.component.html',
   styleUrls: ['./experience.component.scss'],
   animations: [fadeInUp]

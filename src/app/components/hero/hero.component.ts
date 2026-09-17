@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { fadeInUp } from '../../shared/animations/animations';
 import { MagneticDirective } from '../../shared/directives/magnetic.directive';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
@@ -8,7 +8,7 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
   selector: 'app-hero',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MagneticDirective, ScrollRevealDirective],
+  imports: [ MagneticDirective, ScrollRevealDirective],
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.scss'],
   animations: [fadeInUp]

@@ -1,4 +1,4 @@
-<section class="education-section" id="education">
+<section class="education-section">
   <div class="section-container">
     
     <h2 class="section-title"
@@ -25,15 +25,19 @@
         </h3>
 
         <div class="edu-timeline">
-          <div class="edu-item glass-panel" *ngFor="let edu of educationList">
-            <div class="edu-header">
-              <span class="edu-period font-mono">{{ edu.period }}</span>
-              <span class="edu-location font-mono">{{ edu.location }}</span>
+          @for (edu of educationList; track edu.degree) {
+            <div class="edu-item glass-panel">
+              <div class="edu-header">
+                <span class="edu-period font-mono">{{ edu.period }}</span>
+                <span class="edu-location font-mono">{{ edu.location }}</span>
+              </div>
+              <h4 class="edu-degree">{{ edu.degree }}</h4>
+              <h5 class="edu-institution font-mono">{{ edu.institution }}</h5>
+              @if (edu.description) {
+                <p class="edu-desc">{{ edu.description }}</p>
+              }
             </div>
-            <h4 class="edu-degree">{{ edu.degree }}</h4>
-            <h5 class="edu-institution font-mono">{{ edu.institution }}</h5>
-            <p class="edu-desc" *ngIf="edu.description">{{ edu.description }}</p>
-          </div>
+          }
         </div>
       </div>
 
@@ -48,22 +52,28 @@
         </h3>
 
         <div class="cert-grid">
-          <div class="cert-card glass-panel" *ngFor="let cert of certificationsList">
-            <div class="cert-body">
-              <h4 class="cert-name">{{ cert.name }}</h4>
-              <span class="cert-issuer font-mono">{{ cert.issuer }} • {{ cert.date }}</span>
-              <span class="cert-id font-mono" *ngIf="cert.credentialId">ID: {{ cert.credentialId }}</span>
+          @for (cert of certificationsList; track cert.name) {
+            <div class="cert-card glass-panel">
+              <div class="cert-body">
+                <h4 class="cert-name">{{ cert.name }}</h4>
+                <span class="cert-issuer font-mono">{{ cert.issuer }} • {{ cert.date }}</span>
+                @if (cert.credentialId) {
+                  <span class="cert-id font-mono font-bold text-xs opacity-75 mt-1 block">ID: {{ cert.credentialId }}</span>
+                }
+              </div>
+              @if (cert.verificationUrl) {
+                <div class="cert-action">
+                  <a [href]="cert.verificationUrl" target="_blank" rel="noopener noreferrer" class="cert-link" [attr.aria-label]="'Verificar certificación: ' + cert.name">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                  </a>
+                </div>
+              }
             </div>
-            <div class="cert-action" *ngIf="cert.verificationUrl">
-              <a [href]="cert.verificationUrl" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verificar certificación">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </a>
-            </div>
-          </div>
+          }
         </div>
       </div>
 

@@ -143,18 +143,23 @@ pre,
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 14px 0 rgba(240, 180, 155, 0.2);
+  box-shadow: 0 4px 14px 0 rgba(var(--accent-primary-rgb), 0.2);
   transition: var(--transition-smooth);
   text-decoration: none;
   font-family: var(--font-sans);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px 0 rgba(240, 180, 155, 0.4);
+    box-shadow: 0 6px 20px 0 rgba(var(--accent-primary-rgb), 0.4);
   }
 
   &:active {
     transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 3px;
   }
 }
 
@@ -175,8 +180,13 @@ pre,
 
   &:hover {
     border-color: var(--accent-primary);
-    background: rgba(240, 180, 155, 0.05);
+    background: rgba(var(--accent-primary-rgb), 0.05);
     transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 3px;
   }
 }
 
@@ -189,9 +199,9 @@ pre,
   font-size: 0.75rem;
   font-weight: 600;
   font-family: var(--font-mono);
-  background: rgba(240, 180, 155, 0.08);
+  background: rgba(var(--accent-primary-rgb), 0.08);
   color: var(--accent-light);
-  border: 1px solid rgba(240, 180, 155, 0.2);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
 }
 
 .badge-gray {
@@ -202,12 +212,21 @@ pre,
   font-size: 0.75rem;
   font-weight: 600;
   font-family: var(--font-mono);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-tertiary);
   color: var(--text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-normal);
 }
 
 /* Layout Utilities */
+section[id],
+app-hero,
+app-experience,
+app-tech-stack,
+app-education,
+app-projects {
+  scroll-margin-top: 85px;
+}
+
 .section-container {
   max-width: 1200px;
   margin: 0 auto;

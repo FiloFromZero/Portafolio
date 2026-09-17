@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 
 export interface EducationItem {
@@ -22,7 +22,7 @@ export interface CertificationItem {
   selector: 'app-education',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ScrollRevealDirective],
+  imports: [ ScrollRevealDirective],
   templateUrl: './education.component.html',
   styleUrls: ['./education.component.scss']
 })

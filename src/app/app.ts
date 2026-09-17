@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, signal, ChangeDetectionStrategy, NgZone } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, AfterViewInit, OnDestroy, signal, ChangeDetectionStrategy, NgZone, HostListener } from '@angular/core';
+
 import { ParticleCanvasComponent } from './shared/components/particle-canvas/particle-canvas.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { ExperienceComponent } from './components/experience/experience.component';
@@ -14,7 +14,7 @@ const THEME_KEY = 'aura-theme';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
+    
     ParticleCanvasComponent,
     HeroComponent,
     ExperienceComponent,
@@ -25,7 +25,7 @@ const THEME_KEY = 'aura-theme';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class App implements OnInit, OnDestroy {
+export class App implements OnInit, AfterViewInit, OnDestroy {
   isLightTheme = signal(false);
   activeSection = signal('hero');
   isMobileMenuOpen = signal(false);
@@ -40,8 +40,11 @@ export class App implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadSavedTheme();
-    this.initScrollSpy();
     this.initScrollProgress();
+  }
+
+  ngAfterViewInit(): void {
+    this.initScrollSpy();
   }
 
   ngOnDestroy(): void {
@@ -73,12 +76,27 @@ export class App implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.isMobileMenuOpen()) {
+      this.closeMobileMenu();
+    }
+  }
+
   toggleMobileMenu() {
-    this.isMobileMenuOpen.update(v => !v);
+    const newState = !this.isMobileMenuOpen();
+    this.isMobileMenuOpen.set(newState);
+    this.lockBodyScroll(newState);
   }
 
   closeMobileMenu() {
     this.isMobileMenuOpen.set(false);
+    this.lockBodyScroll(false);
+  }
+
+  private lockBodyScroll(lock: boolean): void {
+    if (typeof document === 'undefined') return;
+    document.body.style.overflow = lock ? 'hidden' : '';
   }
 
   scrollTo(sectionId: string, event?: Event) {
@@ -86,7 +104,17 @@ export class App implements OnInit, OnDestroy {
     this.closeMobileMenu();
     const el = document.getElementById(sectionId);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const headerOffset = 78;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      this.activeSection.set(sectionId);
+      if (typeof history !== 'undefined' && history.pushState) {
+        history.pushState(null, '', '#' + sectionId);
+      }
     }
   }
 
@@ -108,7 +136,7 @@ export class App implements OnInit, OnDestroy {
             this.activeSection.set(visible.target.id);
           }
         },
-        { rootMargin: '-40% 0px -55% 0px', threshold: [0, 0.1, 0.3, 0.6, 1] }
+        { rootMargin: '-20% 0px -65% 0px', threshold: [0, 0.15, 0.4] }
       );
 
       this.sectionIds.forEach((id) => {

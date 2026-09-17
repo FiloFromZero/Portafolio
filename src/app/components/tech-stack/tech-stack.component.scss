@@ -18,7 +18,7 @@
     height: 400px;
     top: 5%;
     left: -140px;
-    background: radial-gradient(circle, rgba(240, 180, 155, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-primary-rgb), 0.08) 0%, transparent 70%);
     animation: stack-orb-float 17s ease-in-out infinite alternate;
   }
 
@@ -27,7 +27,7 @@
     height: 340px;
     bottom: -80px;
     right: -100px;
-    background: radial-gradient(circle, rgba(224, 111, 36, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-primary-rgb), 0.06) 0%, transparent 70%);
     animation: stack-orb-float 21s ease-in-out infinite alternate-reverse;
   }
 
@@ -61,10 +61,51 @@
 .section-subtitle {
   color: var(--text-secondary);
   max-width: 680px;
-  margin: -1.5rem auto 3.5rem 0;
+  margin: -1.5rem auto 2.5rem 0;
   font-size: 1rem;
   line-height: 1.6;
   transition: color 0.3s ease;
+}
+
+/* Category Tabs */
+.tech-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.tech-tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-normal);
+  color: var(--text-secondary);
+  padding: 0.6rem 1.25rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  &:hover {
+    background: rgba(var(--accent-primary-rgb), 0.05);
+    border-color: rgba(var(--accent-primary-rgb), 0.3);
+    color: var(--text-primary);
+  }
+
+  &.active {
+    background: rgba(var(--accent-primary-rgb), 0.1);
+    border-color: var(--accent-primary);
+    color: var(--accent-light);
+    box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.15);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 3px;
+  }
 }
 
 /* Minimalist Tech Grid */

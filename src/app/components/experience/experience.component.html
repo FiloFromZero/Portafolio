@@ -1,4 +1,4 @@
-<section class="experience-section" id="experience" @fadeInUp>
+<section class="experience-section" @fadeInUp>
   <div class="section-container">
     
     <h2 class="section-title"
@@ -18,49 +18,59 @@
     <!-- Timeline Container -->
     <div class="timeline-container">
       
-      <div class="timeline-item" *ngFor="let exp of experiences; let i = index"
-           appScrollReveal
-           revealAnimation="fade-left"
-           [revealDelay]="i * 120">
-        
-        <!-- Timeline Marker / Node -->
-        <div class="timeline-node">
-          <div class="node-dot"></div>
-          <div class="node-line" *ngIf="i < experiences.length - 1"></div>
-        </div>
-
-        <!-- Experience Content Card -->
-        <div class="timeline-content glass-panel" appMouseFollow>
+      @for (exp of experiences; track exp.role; let i = $index; let isLast = $last) {
+        <div class="timeline-item"
+             appScrollReveal
+             revealAnimation="fade-left"
+             [revealDelay]="i * 120">
           
-          <div class="card-header">
-            <div class="header-main">
-              <span class="period font-mono">{{ exp.period }}</span>
-              <span class="badge" *ngIf="exp.badge">{{ exp.badge }}</span>
+          <!-- Timeline Marker / Node -->
+          <div class="timeline-node">
+            <div class="node-dot"></div>
+            @if (!isLast) {
+              <div class="node-line"></div>
+            }
+          </div>
+  
+          <!-- Experience Content Card -->
+          <div class="timeline-content glass-panel" appMouseFollow>
+            
+            <div class="card-header">
+              <div class="header-main">
+                <span class="period font-mono">{{ exp.period }}</span>
+                @if (exp.badge) {
+                  <span class="badge">{{ exp.badge }}</span>
+                }
+              </div>
+              <span class="location font-mono">{{ exp.location }}</span>
             </div>
-            <span class="location font-mono">{{ exp.location }}</span>
+  
+            <h3 class="role-title">{{ exp.role }}</h3>
+            <h4 class="company-name font-mono">{{ exp.company }}</h4>
+  
+            <p class="experience-desc">{{ exp.description }}</p>
+  
+            <!-- Key Highlights / Achievements -->
+            <ul class="highlights-list">
+              @for (hl of exp.highlights; track hl) {
+                <li>
+                  <span class="hl-bullet">▹</span>
+                  <span class="hl-text">{{ hl }}</span>
+                </li>
+              }
+            </ul>
+  
+            <!-- Tech Stack Tags -->
+            <div class="tech-stack">
+              @for (tech of exp.technologies; track tech) {
+                <span class="badge-gray">{{ tech }}</span>
+              }
+            </div>
+  
           </div>
-
-          <h3 class="role-title">{{ exp.role }}</h3>
-          <h4 class="company-name font-mono">{{ exp.company }}</h4>
-
-          <p class="experience-desc">{{ exp.description }}</p>
-
-          <!-- Key Highlights / Achievements -->
-          <ul class="highlights-list">
-            <li *ngFor="let hl of exp.highlights">
-              <span class="hl-bullet">▹</span>
-              <span class="hl-text">{{ hl }}</span>
-            </li>
-          </ul>
-
-          <!-- Tech Stack Tags -->
-          <div class="tech-stack">
-            <span class="badge-gray" *ngFor="let tech of exp.technologies">{{ tech }}</span>
-          </div>
-
+  
         </div>
-
-      </div>
+      }
 
     </div>
 

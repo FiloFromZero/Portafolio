@@ -9,16 +9,14 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
+interface LightOrb {
+  baseX: number; // percentage (0..1)
+  baseY: number; // percentage (0..1)
   radius: number;
-  baseRadius: number;
-  alpha: number;
-  pulse: number;
-  pulseSpeed: number;
+  speedX: number;
+  speedY: number;
+  phase: number;
+  colorType: 'primary' | 'secondary';
 }
 
 @Component({
@@ -44,20 +42,27 @@ export class ParticleCanvasComponent implements OnInit, AfterViewInit, OnDestroy
   @ViewChild('canvasEl', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   
   private ctx!: CanvasRenderingContext2D;
-  private particles: Particle[] = [];
   private animationFrameId!: number;
-  private mouse = { x: -9999, y: -9999, radius: 220 };
   private active = false;
   private cleanups: (() => void)[] = [];
-  private lastTime = 0;
+  private time = 0;
 
-  // Presencia: número mayor de partículas y tamaño base superior
-  private readonly density: number = 0.000045;
-  private readonly maxParticles = 120;
-  private readonly minRadius = 1.2;
-  private readonly maxRadius = 2.6;
-  private readonly linkDistance = 130;
-  private readonly linkDistanceSq = 130 * 130;
+  // Damped cursor tracking for soft ambient spotlight
+  private mouse = {
+    x: -9999,
+    y: -9999,
+    targetX: -9999,
+    targetY: -9999,
+    active: false,
+    radius: 160
+  };
+
+  // Subtle ambient light orbs (breathing gently in the background)
+  private readonly orbs: LightOrb[] = [
+    { baseX: 0.18, baseY: 0.15, radius: 420, speedX: 0.0004, speedY: 0.0003, phase: 0.0, colorType: 'primary' },
+    { baseX: 0.82, baseY: 0.35, radius: 480, speedX: 0.0003, speedY: 0.0005, phase: 2.2, colorType: 'secondary' },
+    { baseX: 0.45, baseY: 0.75, radius: 440, speedX: 0.0005, speedY: 0.0004, phase: 4.1, colorType: 'primary' }
+  ];
 
   constructor(private ngZone: NgZone) {}
 
@@ -77,13 +82,11 @@ export class ParticleCanvasComponent implements OnInit, AfterViewInit, OnDestroy
       typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Run particle logic, drawing loop and all event listeners entirely outside Angular zone
     this.ngZone.runOutsideAngular(() => {
-      this.initParticles();
       this.attachListeners();
 
       if (prefersReduced) {
-        this.draw();
+        this.renderStatic();
       } else {
         this.loop();
       }
@@ -104,17 +107,16 @@ export class ParticleCanvasComponent implements OnInit, AfterViewInit, OnDestroy
 
     const onResize = () => {
       this.resizeCanvas();
-      this.initParticles();
     };
 
     const onMouseMove = (event: MouseEvent) => {
-      this.mouse.x = event.clientX;
-      this.mouse.y = event.clientY;
+      this.mouse.targetX = event.clientX;
+      this.mouse.targetY = event.clientY;
+      this.mouse.active = true;
     };
 
     const onMouseLeave = () => {
-      this.mouse.x = -9999;
-      this.mouse.y = -9999;
+      this.mouse.active = false;
     };
 
     const onVisibilityChange = () => {
@@ -144,111 +146,113 @@ export class ParticleCanvasComponent implements OnInit, AfterViewInit, OnDestroy
       width: window.innerWidth,
       height: window.innerHeight
     };
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  private initParticles() {
-    const canvas = this.canvasRef.nativeElement;
-    const totalParticles = Math.min(
-      Math.floor(canvas.width * canvas.height * this.density),
-      this.maxParticles
-    );
-
-    this.particles = [];
-    for (let i = 0; i < totalParticles; i++) {
-      const radius = this.minRadius + Math.random() * (this.maxRadius - this.minRadius);
-      this.particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius,
-        baseRadius: radius,
-        alpha: Math.random() * 0.5 + 0.3,
-        pulse: Math.random() * Math.PI * 2,
-        pulseSpeed: 0.5 + Math.random() * 1.2
-      });
-    }
-  }
-
-  private loop(now = 0) {
+  private loop() {
     if (!this.active) return;
-    const dt = this.lastTime ? (now - this.lastTime) / 16.667 : 1;
-    this.lastTime = now;
-    this.draw(dt);
-    this.animationFrameId = requestAnimationFrame((t) => this.loop(t));
+    this.time += 1;
+
+    // Smooth cursor interpolation (lerp)
+    if (this.mouse.active) {
+      if (this.mouse.x === -9999) {
+        this.mouse.x = this.mouse.targetX;
+        this.mouse.y = this.mouse.targetY;
+      } else {
+        this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.08;
+        this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.08;
+      }
+    } else {
+      this.mouse.x += (-9999 - this.mouse.x) * 0.05;
+      this.mouse.y += (-9999 - this.mouse.y) * 0.05;
+    }
+
+    this.render();
+    this.animationFrameId = requestAnimationFrame(() => this.loop());
   }
 
-  private draw(dt = 1) {
+  private renderStatic() {
+    this.time = 50;
+    this.render();
+  }
+
+  private render() {
     const canvas = this.canvasRef.nativeElement;
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const width = canvas.width / dpr;
+    const height = canvas.height / dpr;
+
+    this.ctx.clearRect(0, 0, width, height);
 
     const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light-theme');
-    const particleRgb = isLight ? '207, 110, 72' : '240, 180, 155';
-    const lineRgb = isLight ? '185, 93, 56' : '248, 204, 186';
+    const primaryRgb = isLight ? '207, 110, 72' : '240, 180, 155';
+    const secondaryRgb = isLight ? '180, 85, 50' : '224, 111, 36';
 
-    const pLen = this.particles.length;
-    const mouseActive = this.mouse.x !== -9999;
+    // 1. Subtle ambient breathing light orbs (deep, quiet depth)
+    for (const orb of this.orbs) {
+      const offsetX = Math.sin(this.time * orb.speedX + orb.phase) * (width * 0.05);
+      const offsetY = Math.cos(this.time * orb.speedY + orb.phase) * (height * 0.04);
+      const ox = width * orb.baseX + offsetX;
+      const oy = height * orb.baseY + offsetY;
+      const color = orb.colorType === 'primary' ? primaryRgb : secondaryRgb;
 
-    for (let i = 0; i < pLen; i++) {
-      const p = this.particles[i];
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
+      const grad = this.ctx.createRadialGradient(ox, oy, 0, ox, oy, orb.radius);
+      const maxAlpha = isLight ? 0.035 : 0.055;
+      grad.addColorStop(0, `rgba(${color}, ${maxAlpha})`);
+      grad.addColorStop(0.6, `rgba(${color}, ${maxAlpha * 0.3})`);
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-      // Animación de pulso suave para dar más vida y presencia
-      p.pulse += p.pulseSpeed * 0.02 * dt;
-      p.radius = p.baseRadius + Math.sin(p.pulse) * 0.35;
-
-      if (mouseActive) {
-        const dx = this.mouse.x - p.x;
-        const dy = this.mouse.y - p.y;
-        const distSq = dx * dx + dy * dy;
-        const radiusSq = this.mouse.radius * this.mouse.radius;
-
-        if (distSq < radiusSq) {
-          const dist = Math.sqrt(distSq) || 1;
-          const force = (this.mouse.radius - dist) / this.mouse.radius;
-          p.x -= dx * force * 0.04 * dt;
-          p.y -= dy * force * 0.04 * dt;
-        }
-      }
+      this.ctx.fillStyle = grad;
+      this.ctx.fillRect(0, 0, width, height);
     }
 
-    // Dibujar enlaces entre partículas cercanas (más visibles)
-    for (let i = 0; i < pLen; i++) {
-      const p1 = this.particles[i];
-      for (let j = i + 1; j < pLen; j++) {
-        const p2 = this.particles[j];
-        const dx = p1.x - p2.x;
-        const dy = p1.y - p2.y;
-        const distSq = dx * dx + dy * dy;
+    // 2. Quiet interactive spotlight following cursor
+    if (this.mouse.active && this.mouse.x > -1000) {
+      const glowGrad = this.ctx.createRadialGradient(
+        this.mouse.x, this.mouse.y, 0,
+        this.mouse.x, this.mouse.y, 280
+      );
+      const spotlightAlpha = isLight ? 0.05 : 0.065;
+      glowGrad.addColorStop(0, `rgba(${primaryRgb}, ${spotlightAlpha})`);
+      glowGrad.addColorStop(0.5, `rgba(${primaryRgb}, ${spotlightAlpha * 0.3})`);
+      glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-        if (distSq < this.linkDistanceSq) {
-          const dist = Math.sqrt(distSq);
-          const base = (this.linkDistance - dist) / this.linkDistance;
-          const alpha = (base * (isLight ? 0.28 : 0.22)) * p1.alpha;
-          this.ctx.beginPath();
-          this.ctx.moveTo(p1.x, p1.y);
-          this.ctx.lineTo(p2.x, p2.y);
-          this.ctx.strokeStyle = `rgba(${lineRgb}, ${alpha})`;
-          this.ctx.lineWidth = 0.8;
-          this.ctx.stroke();
-        }
-      }
+      this.ctx.fillStyle = glowGrad;
+      this.ctx.fillRect(0, 0, width, height);
     }
 
-    // Dibujar partículas en la parte superior (encima de los enlaces)
-    for (let i = 0; i < pLen; i++) {
-      const p = this.particles[i];
-      const alpha = p.alpha * (isLight ? 0.85 : 1);
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(${particleRgb}, ${alpha})`;
-      this.ctx.fill();
+    // 3. Minimalist, ultra-clean precision dot matrix
+    const gridSize = 54;
+    const dotRadius = 0.85;
+    const cols = Math.ceil(width / gridSize);
+    const rows = Math.ceil(height / gridSize);
+
+    for (let c = 0; c <= cols; c++) {
+      for (let r = 0; r <= rows; r++) {
+        const gx = c * gridSize;
+        const gy = r * gridSize;
+
+        let alpha = isLight ? 0.03 : 0.02;
+
+        if (this.mouse.active && this.mouse.x > -1000) {
+          const dx = this.mouse.x - gx;
+          const dy = this.mouse.y - gy;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < 25600) { // 160px radius
+            const dist = Math.sqrt(distSq);
+            const factor = (1 - dist / 160);
+            alpha += factor * (isLight ? 0.12 : 0.14);
+          }
+        }
+
+        this.ctx.beginPath();
+        this.ctx.arc(gx, gy, dotRadius, 0, Math.PI * 2);
+        this.ctx.fillStyle = `rgba(${primaryRgb}, ${alpha})`;
+        this.ctx.fill();
+      }
     }
   }
 }

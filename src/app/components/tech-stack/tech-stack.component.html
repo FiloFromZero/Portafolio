@@ -1,4 +1,4 @@
-<section class="tech-stack-section" id="tech-stack">
+<section class="tech-stack-section">
   <div class="section-container">
     
     <h2 class="section-title"
@@ -11,20 +11,33 @@
       Tecnologías y herramientas que domino y empleo activamente en mis desarrollos.
     </p>
 
+    <!-- Category Filter Tabs -->
+    <div class="tech-tabs" appScrollReveal revealAnimation="fade-up" [revealDelay]="150">
+      @for (cat of categories; track cat) {
+        <button 
+          class="tech-tab-btn" 
+          [class.active]="activeCategory() === cat"
+          (click)="setCategory(cat)">
+          {{ cat }}
+        </button>
+      }
+    </div>
+
     <!-- Minimalistic Tech Grid -->
     <div class="tech-grid">
-      <div class="tech-card-minimal glass-panel" 
-           *ngFor="let tech of techs; let i = index"
-           [style.--glow-color]="tech.glowColor"
-           appScrollReveal revealAnimation="zoom-in" [revealDelay]="i * 60"
-           appMouseFollow>
-        
-        <div class="tech-icon-wrapper">
-          <img [src]="tech.logoUrl" [alt]="tech.name + ' logo'" class="tech-icon-img" width="26" height="26" loading="lazy" decoding="async">
-        </div>
+      @for (tech of filteredTechs(); track tech.name; let i = $index) {
+        <div class="tech-card-minimal glass-panel" 
+             [style.--glow-color]="tech.glowColor"
+             appScrollReveal revealAnimation="zoom-in" [revealDelay]="(i % 6) * 60"
+             appMouseFollow>
+          
+          <div class="tech-icon-wrapper">
+            <img [src]="tech.logoUrl" [alt]="tech.name + ' logo'" class="tech-icon-img" width="26" height="26" loading="lazy" decoding="async">
+          </div>
 
-        <div class="tech-name font-mono">{{ tech.name }}</div>
-      </div>
+          <div class="tech-name font-mono">{{ tech.name }}</div>
+        </div>
+      }
     </div>
 
   </div>

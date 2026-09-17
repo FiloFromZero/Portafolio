@@ -130,24 +130,49 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+  margin-bottom: 1.25rem;
 
-.project-category {
-  font-size: 0.75rem;
-  color: var(--accent-light);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
+  .project-header-left {
+    display: flex;
+    align-items: center;
+  }
 
-.github-link {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-
-  &:hover {
+  .project-category {
+    font-size: 0.8rem;
     color: var(--accent-primary);
+    font-weight: 600;
+  }
+  
+  .featured-badge {
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.2), rgba(var(--accent-primary-rgb), 0.1));
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+    color: var(--accent-light);
+    border-radius: 4px;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .github-link {
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+
+    &:hover {
+      color: var(--accent-primary);
+    }
+    
+    &.text-accent {
+      color: var(--accent-primary);
+      &:hover {
+        color: var(--accent-light);
+      }
+    }
   }
 }
 
