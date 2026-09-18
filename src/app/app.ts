@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal, ChangeDetectionStrategy, NgZone, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, ChangeDetectionStrategy, NgZone, HostListener, inject } from '@angular/core';
 
 import { ParticleCanvasComponent } from './shared/components/particle-canvas/particle-canvas.component';
 import { HeroComponent } from './components/hero/hero.component';
@@ -6,6 +6,7 @@ import { ExperienceComponent } from './components/experience/experience.componen
 import { TechStackComponent } from './components/tech-stack/tech-stack.component';
 import { EducationComponent } from './components/education/education.component';
 import { ProjectsComponent } from './components/projects/projects.component';
+import { TranslationService } from './shared/services/translation.service';
 
 const THEME_KEY = 'aura-theme';
 
@@ -26,11 +27,16 @@ const THEME_KEY = 'aura-theme';
   styleUrls: ['./app.scss']
 })
 export class App implements OnInit, OnDestroy {
+  private readonly translationService = inject(TranslationService);
+
   isLightTheme = signal(false);
   activeSection = signal('hero');
   isMobileMenuOpen = signal(false);
   scrollProgress = signal(0);
   isHeaderScrolled = signal(false);
+
+  readonly currentLang = this.translationService.currentLang;
+  readonly t = this.translationService.t;
 
   private readonly sectionIds = ['hero', 'experience', 'tech-stack', 'projects', 'education'];
   private isNavigating = false;
@@ -38,6 +44,10 @@ export class App implements OnInit, OnDestroy {
   private scrollCleanups: (() => void)[] = [];
 
   constructor(private ngZone: NgZone) {}
+
+  toggleLanguage(): void {
+    this.translationService.toggleLanguage();
+  }
 
   ngOnInit(): void {
     this.loadSavedTheme();

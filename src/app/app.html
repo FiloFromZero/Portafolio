@@ -5,16 +5,16 @@
 <div class="scroll-progress" [style.transform]="'scaleX(' + scrollProgress() + ')'" aria-hidden="true"></div>
 
 <!-- 1. UBUNTU-STYLE AUTO-REVEAL DOCK (Desktop Only) -->
-<aside class="ubuntu-dock-wrapper desktop-only" aria-label="Dock lateral estilo Ubuntu">
+<aside class="ubuntu-dock-wrapper desktop-only" [attr.aria-label]="t().nav.dockLabel">
   <!-- Interactive Left Edge Peek Indicator with "MENÚ" -->
-  <div class="dock-peek-trigger" aria-label="Abrir dock de menú lateral">
+  <div class="dock-peek-trigger" [attr.aria-label]="t().nav.dockLabel">
     <div class="peek-tab">
       <svg class="peek-menu-icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
-      <span class="peek-text font-mono">MENÚ</span>
+      <span class="peek-text font-mono">{{ t().nav.menu }}</span>
       <svg class="peek-chevron" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="9 18 15 12 9 6"></polyline>
       </svg>
@@ -22,9 +22,9 @@
   </div>
 
   <!-- The Ubuntu Dock Menu (Transparent Frosted Glass) -->
-  <nav class="ubuntu-dock" aria-label="Navegación principal">
+  <nav class="ubuntu-dock" [attr.aria-label]="t().nav.dockLabel">
     <!-- Brand Avatar / App Launcher (Ubuntu Style) -->
-    <a href="#hero" class="dock-app-launcher" (click)="scrollTo('hero', $event)" aria-label="Daniel Mateo Montoya - Inicio">
+    <a href="#hero" class="dock-app-launcher" (click)="scrollTo('hero', $event)" [attr.aria-label]="t().nav.homeAria">
       <span class="brand-avatar font-display">MM</span>
       <span class="dock-tooltip font-mono">Daniel Mateo Montoya</span>
     </a>
@@ -33,47 +33,53 @@
 
     <!-- Running Apps / Section Navigation -->
     <div class="dock-apps-list">
-      <a href="#hero" class="dock-item" [class.active]="activeSection() === 'hero'" (click)="scrollTo('hero', $event)" aria-label="Inicio">
+      <a href="#hero" class="dock-item" [class.active]="activeSection() === 'hero'" (click)="scrollTo('hero', $event)" [attr.aria-label]="t().nav.home">
         <span class="running-pip"></span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        <span class="dock-tooltip font-mono">Inicio</span>
+        <span class="dock-tooltip font-mono">{{ t().nav.home }}</span>
       </a>
 
-      <a href="#experience" class="dock-item" [class.active]="activeSection() === 'experience'" (click)="scrollTo('experience', $event)" aria-label="Experiencia">
+      <a href="#experience" class="dock-item" [class.active]="activeSection() === 'experience'" (click)="scrollTo('experience', $event)" [attr.aria-label]="t().nav.experience">
         <span class="running-pip"></span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-        <span class="dock-tooltip font-mono">Experiencia</span>
+        <span class="dock-tooltip font-mono">{{ t().nav.experience }}</span>
       </a>
 
-      <a href="#tech-stack" class="dock-item" [class.active]="activeSection() === 'tech-stack'" (click)="scrollTo('tech-stack', $event)" aria-label="Stack Tecnológico">
+      <a href="#tech-stack" class="dock-item" [class.active]="activeSection() === 'tech-stack'" (click)="scrollTo('tech-stack', $event)" [attr.aria-label]="t().nav.stack">
         <span class="running-pip"></span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-        <span class="dock-tooltip font-mono">Stack Tecnológico</span>
+        <span class="dock-tooltip font-mono">{{ t().nav.stack }}</span>
       </a>
 
-      <a href="#projects" class="dock-item" [class.active]="activeSection() === 'projects'" (click)="scrollTo('projects', $event)" aria-label="Proyectos">
+      <a href="#projects" class="dock-item" [class.active]="activeSection() === 'projects'" (click)="scrollTo('projects', $event)" [attr.aria-label]="t().nav.projects">
         <span class="running-pip"></span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path></svg>
-        <span class="dock-tooltip font-mono">Proyectos</span>
+        <span class="dock-tooltip font-mono">{{ t().nav.projects }}</span>
       </a>
 
-      <a href="#education" class="dock-item" [class.active]="activeSection() === 'education'" (click)="scrollTo('education', $event)" aria-label="Estudios &amp; Certificaciones">
+      <a href="#education" class="dock-item" [class.active]="activeSection() === 'education'" (click)="scrollTo('education', $event)" [attr.aria-label]="t().nav.education">
         <span class="running-pip"></span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-        <span class="dock-tooltip font-mono">Estudios</span>
+        <span class="dock-tooltip font-mono">{{ t().nav.education }}</span>
       </a>
     </div>
 
     <div class="dock-divider"></div>
 
     <!-- Theme Switch Button (Ubuntu System Settings) -->
-    <button class="dock-item theme-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? 'Activar modo oscuro' : 'Activar modo claro'">
+    <button class="dock-item theme-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? t().nav.themeDark : t().nav.themeLight">
       @if (isLightTheme()) {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
       } @else {
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
       }
-      <span class="dock-tooltip font-mono">{{ isLightTheme() ? 'Modo Oscuro' : 'Modo Claro' }}</span>
+      <span class="dock-tooltip font-mono">{{ isLightTheme() ? t().nav.themeDark : t().nav.themeLight }}</span>
+    </button>
+
+    <!-- Language Toggle Button (Ubuntu Dock) -->
+    <button class="dock-item lang-btn" (click)="toggleLanguage()" [attr.aria-label]="t().nav.langToggleAria">
+      <span class="dock-lang-badge font-mono">{{ currentLang().toUpperCase() }}</span>
+      <span class="dock-tooltip font-mono">{{ t().nav.langTooltip }}</span>
     </button>
   </nav>
 </aside>
@@ -81,14 +87,19 @@
 <!-- Minimalist Header (Mobile Only) -->
 <header class="hud-header mobile-only" [class.is-scrolled]="isHeaderScrolled()">
   <div class="hud-container">
-    <!-- Brand / Identifier (Mobile Only) -->
-    <a href="#hero" class="hud-brand" (click)="scrollTo('hero', $event)" aria-label="Daniel Mateo Montoya - Inicio">
-      <span class="brand-name font-display">Daniel Mateo Montoya</span>
+    <!-- Clean Minimalist Monogram Brand (No long name in mobile navbar) -->
+    <a href="#hero" class="hud-brand" (click)="scrollTo('hero', $event)" [attr.aria-label]="t().nav.homeAria">
+      <span class="brand-monogram font-display">MM</span>
     </a>
     
     <div class="hud-actions">
+      <!-- Quick Language Switch (Mobile Only) -->
+      <button class="lang-toggle-btn mobile-lang-btn font-mono" (click)="toggleLanguage()" [attr.aria-label]="t().nav.langToggleAria">
+        <span class="lang-code">{{ currentLang().toUpperCase() }}</span>
+      </button>
+
       <!-- Quick Theme Switch (Mobile Only) -->
-      <button class="theme-toggle-btn mobile-theme-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? 'Activar modo oscuro' : 'Activar modo claro'">
+      <button class="theme-toggle-btn mobile-theme-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? t().nav.themeDark : t().nav.themeLight">
         @if (isLightTheme()) {
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
         } @else {
@@ -101,7 +112,7 @@
         class="hamburger-btn mobile-only" 
         [class.open]="isMobileMenuOpen()" 
         (click)="toggleMobileMenu()"
-        aria-label="Alternar menú de navegación"
+        [attr.aria-label]="t().nav.menuToggleAria"
         [attr.aria-expanded]="isMobileMenuOpen()"
         aria-controls="mobile-nav-drawer"
       >
@@ -116,17 +127,17 @@
   @if (isMobileMenuOpen()) {
     <div class="mobile-nav-backdrop" (click)="closeMobileMenu()"></div>
   }
-  <nav id="mobile-nav-drawer" class="mobile-nav-drawer editorial-panel" [class.open]="isMobileMenuOpen()" aria-label="Navegación móvil">
-    <a href="#hero" class="mobile-nav-link" [class.active]="activeSection() === 'hero'" (click)="scrollTo('hero', $event)">Inicio</a>
-    <a href="#experience" class="mobile-nav-link" [class.active]="activeSection() === 'experience'" (click)="scrollTo('experience', $event)">Experiencia</a>
-    <a href="#tech-stack" class="mobile-nav-link" [class.active]="activeSection() === 'tech-stack'" (click)="scrollTo('tech-stack', $event)">Stack</a>
-    <a href="#projects" class="mobile-nav-link" [class.active]="activeSection() === 'projects'" (click)="scrollTo('projects', $event)">Proyectos</a>
-    <a href="#education" class="mobile-nav-link" [class.active]="activeSection() === 'education'" (click)="scrollTo('education', $event)">Estudios</a>
+  <nav id="mobile-nav-drawer" class="mobile-nav-drawer editorial-panel" [class.open]="isMobileMenuOpen()" [attr.aria-label]="t().nav.dockLabel">
+    <a href="#hero" class="mobile-nav-link" [class.active]="activeSection() === 'hero'" (click)="scrollTo('hero', $event)">{{ t().nav.home }}</a>
+    <a href="#experience" class="mobile-nav-link" [class.active]="activeSection() === 'experience'" (click)="scrollTo('experience', $event)">{{ t().nav.experience }}</a>
+    <a href="#tech-stack" class="mobile-nav-link" [class.active]="activeSection() === 'tech-stack'" (click)="scrollTo('tech-stack', $event)">{{ t().nav.stack }}</a>
+    <a href="#projects" class="mobile-nav-link" [class.active]="activeSection() === 'projects'" (click)="scrollTo('projects', $event)">{{ t().nav.projects }}</a>
+    <a href="#education" class="mobile-nav-link" [class.active]="activeSection() === 'education'" (click)="scrollTo('education', $event)">{{ t().nav.education }}</a>
 
     <!-- Theme Switch inside Drawer (Mobile Only) -->
     <div class="mobile-drawer-divider"></div>
-    <button type="button" class="mobile-theme-row-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? 'Activar modo oscuro' : 'Activar modo claro'">
-      <span class="theme-row-label font-mono">{{ isLightTheme() ? 'Modo Oscuro' : 'Modo Claro' }}</span>
+    <button type="button" class="mobile-theme-row-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? t().nav.themeDark : t().nav.themeLight">
+      <span class="theme-row-label font-mono">{{ isLightTheme() ? t().nav.themeDark : t().nav.themeLight }}</span>
       <span class="theme-row-icon">
         @if (isLightTheme()) {
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
@@ -134,6 +145,12 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
         }
       </span>
+    </button>
+
+    <!-- Language Switch inside Drawer (Mobile Only) -->
+    <button type="button" class="mobile-theme-row-btn mobile-lang-row-btn" (click)="toggleLanguage()" [attr.aria-label]="t().nav.langToggleAria">
+      <span class="theme-row-label font-mono">{{ t().nav.langLabel }}</span>
+      <span class="lang-drawer-pill font-mono">{{ currentLang() === 'es' ? 'ESPAÑOL (ES)' : 'ENGLISH (EN)' }}</span>
     </button>
   </nav>
 </header>
@@ -157,29 +174,29 @@
     <div class="footer-top">
       <div class="footer-brand">
         <span class="footer-logo font-display">Daniel Mateo Montoya</span>
-        <p class="footer-tagline">Ingeniero de Sistemas &bull; Full-Stack &amp; Cloud Specialist &bull; Bogotá, Colombia</p>
+        <p class="footer-tagline">{{ t().footer.tagline }}</p>
       </div>
 
       <div class="footer-links">
-        <a href="#hero" (click)="scrollTo('hero', $event)">Inicio</a>
-        <a href="#experience" (click)="scrollTo('experience', $event)">Experiencia</a>
-        <a href="#tech-stack" (click)="scrollTo('tech-stack', $event)">Stack</a>
-        <a href="#projects" (click)="scrollTo('projects', $event)">Proyectos</a>
-        <a href="#education" (click)="scrollTo('education', $event)">Estudios</a>
+        <a href="#hero" (click)="scrollTo('hero', $event)">{{ t().nav.home }}</a>
+        <a href="#experience" (click)="scrollTo('experience', $event)">{{ t().nav.experience }}</a>
+        <a href="#tech-stack" (click)="scrollTo('tech-stack', $event)">{{ t().nav.stack }}</a>
+        <a href="#projects" (click)="scrollTo('projects', $event)">{{ t().nav.projects }}</a>
+        <a href="#education" (click)="scrollTo('education', $event)">{{ t().nav.education }}</a>
       </div>
 
       <div class="footer-socials">
-        <a href="https://github.com/FiloFromZero" target="_blank" rel="noopener noreferrer" aria-label="Perfil de GitHub de Daniel Mateo Montoya" class="social-icon-btn">
+        <a href="https://github.com/FiloFromZero" target="_blank" rel="noopener noreferrer" [attr.aria-label]="t().footer.githubAria" class="social-icon-btn">
           <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
           </svg>
         </a>
-        <a href="https://www.linkedin.com/in/mateo-montoya-269998248" target="_blank" rel="noopener noreferrer" aria-label="Perfil de LinkedIn de Daniel Mateo Montoya" class="social-icon-btn">
+        <a href="https://www.linkedin.com/in/mateo-montoya-269998248" target="_blank" rel="noopener noreferrer" [attr.aria-label]="t().footer.linkedinAria" class="social-icon-btn">
           <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
           </svg>
         </a>
-        <button class="back-to-top-btn" (click)="scrollTo('hero', $event)" aria-label="Volver al inicio de la página" title="Volver al inicio">
+        <button class="back-to-top-btn" (click)="scrollTo('hero', $event)" [attr.aria-label]="t().footer.backToTopAria" [title]="t().footer.backToTopTitle">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="18 15 12 9 6 15"></polyline>
           </svg>
@@ -189,7 +206,7 @@
 
     <div class="footer-bottom">
       <div class="footer-copy">
-        &copy; 2026 Daniel Mateo Montoya &bull; Java 21 &bull; Angular &bull; AWS &bull; Terraform
+        {{ t().footer.copyright }}
       </div>
     </div>
   </div>

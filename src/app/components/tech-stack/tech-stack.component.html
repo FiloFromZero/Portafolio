@@ -3,20 +3,20 @@
     
     <h2 class="section-title"
         appScrollReveal revealAnimation="fade-up" [revealDelay]="0">
-      Stack Tecnológico
+      {{ t().techStack.title }}
     </h2>
     
     <p class="section-subtitle"
-       appScrollReveal revealAnimation="fade-up" [revealDelay]="80">
-      Ecosistema de ingeniería categorizado por rol. Selecciona una categoría y pulsa sobre cualquier tecnología en el carrusel para abrir su ficha técnica, casos de uso e implementación en proyectos reales.
+        appScrollReveal revealAnimation="fade-up" [revealDelay]="80">
+      {{ t().techStack.subtitle }}
     </p>
 
-    <!-- 1. ROLE CATEGORIZATION TABS (Opciones categorizadas) -->
+    <!-- 1. ROLE CATEGORIZATION TABS -->
     <div class="role-tabs-bar" 
          appScrollReveal revealAnimation="fade-up" [revealDelay]="120"
          role="tablist" 
-         aria-label="Filtrar tecnologías por rol">
-      @for (role of roles; track role.id) {
+         [attr.aria-label]="t().techStack.rolesTabsAria">
+      @for (role of roles(); track role.id) {
         <button type="button"
                 role="tab"
                 class="role-tab-btn"
@@ -29,16 +29,16 @@
       }
     </div>
 
-    <!-- 2. SUBTLE CONTINUOUS CAROUSEL (Carrusel interactivo filtrado por rol) -->
+    <!-- 2. SUBTLE CONTINUOUS CAROUSEL -->
     <div class="carousel-overview" 
          appScrollReveal revealAnimation="fade-up" [revealDelay]="160"
-         aria-label="Carrusel interactivo del stack tecnológico">
+         [attr.aria-label]="t().techStack.carouselAria">
       <div class="carousel-track">
         @for (tech of carouselTrackTechs(); track $index) {
           <button type="button" 
                   class="carousel-pill" 
                   (click)="openTechPopup(tech)"
-                  [title]="'Abrir ficha técnica de ' + tech.name">
+                  [title]="tech.name">
             <div class="pill-icon-box">
               <img [src]="tech.logoUrl" 
                    [alt]="tech.name + ' logo'" 
@@ -61,19 +61,19 @@
     <!-- 3. Minimal Helper Hint -->
     <p class="carousel-hint font-mono" appScrollReveal revealAnimation="fade-up" [revealDelay]="200">
       <span class="hint-bullet">&bull;</span>
-      <span>Pulsa sobre cualquier tecnología del carrusel para desplegar su ficha técnica, casos de uso y proyectos vinculados.</span>
+      <span>{{ t().techStack.hint }}</span>
     </p>
 
   </div>
 
-  <!-- 4. MODAL POP-UP DIALOG (Detalle emergente interactivo) -->
-  @if (selectedTech(); as tech) {
+  <!-- 4. MODAL POP-UP DIALOG -->
+  @if (activeModalTech(); as tech) {
     <div class="tech-modal-backdrop" 
          (click)="closeTechPopup()" 
          aria-hidden="true" 
          @fadeInOverlay></div>
     
-    <div class="tech-modal-wrapper" role="dialog" aria-modal="true" [attr.aria-label]="'Detalles de ' + tech.name">
+    <div class="tech-modal-wrapper" role="dialog" aria-modal="true" [attr.aria-label]="tech.name">
       <div class="tech-modal editorial-panel" @popupModal>
         
         <!-- Modal Header -->
@@ -91,7 +91,7 @@
           <button type="button" 
                   class="modal-close-btn" 
                   (click)="closeTechPopup()" 
-                  aria-label="Cerrar ventana de detalles">
+                  [attr.aria-label]="t().techStack.modalCloseAria">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -104,7 +104,7 @@
 
         <!-- Uses Section -->
         <section class="modal-section">
-          <h4 class="section-heading font-mono">USOS Y CAPACIDADES EN PRODUCCIÓN</h4>
+          <h4 class="section-heading font-mono">{{ t().techStack.modalUsesHeading }}</h4>
           <ul class="uses-list">
             @for (use of tech.uses; track use) {
               <li>
@@ -117,7 +117,7 @@
 
         <!-- Projects Usage Section -->
         <section class="modal-section">
-          <h4 class="section-heading font-mono">IMPLEMENTADO EN LOS PROYECTOS</h4>
+          <h4 class="section-heading font-mono">{{ t().techStack.modalProjectsHeading }}</h4>
           <div class="projects-list">
             @for (proj of tech.projects; track proj.id) {
               <div class="project-usage-card">
@@ -126,7 +126,7 @@
                   <a href="#projects" 
                      class="proj-link font-mono" 
                      (click)="scrollToProject(proj.id, $event)">
-                    Ver proyecto &nearr;
+                    {{ t().techStack.modalViewProject }}
                   </a>
                 </div>
                 <p class="proj-impl">{{ proj.implementation }}</p>
@@ -138,7 +138,7 @@
         <!-- Modal Footer -->
         <footer class="modal-footer">
           <button type="button" class="btn-secondary font-sans" (click)="closeTechPopup()">
-            Cerrar ficha
+            {{ t().techStack.modalCloseBtn }}
           </button>
         </footer>
 

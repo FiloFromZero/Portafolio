@@ -6,47 +6,45 @@
       
       <!-- Minimalist Eyebrow -->
       <div class="hero-eyebrow font-mono" appScrollReveal revealAnimation="fade-up" [revealDelay]="40">
-        <span class="eyebrow-accent">Ingeniero de Sistemas</span> &bull; Bogotá, Colombia
+        <span class="eyebrow-accent">{{ t().hero.eyebrow }}</span>
       </div>
 
       <!-- Main Headline: Name as Protagonist + Technical Role -->
       <h1 class="hero-title" appScrollReveal revealAnimation="fade-up" [revealDelay]="80">
         <span class="hero-name font-display">Daniel Mateo Montoya</span>
         <span class="hero-role">
-          <span class="text-accent">Desarrollador</span> Full-Stack &amp; Cloud
+          <span class="text-accent">{{ t().hero.roleAccent }}</span> {{ t().hero.roleSuffix }}
         </span>
       </h1>
 
       <!-- Value Proposition Summary -->
-      <p class="hero-lead" appScrollReveal revealAnimation="fade-up" [revealDelay]="120">
-        Diseño y construyo arquitecturas limpias, microservicios empresariales de alto rendimiento con <strong class="text-primary">Java 21 (Spring Boot)</strong> y aplicaciones web modernas con <strong class="text-primary">Angular</strong>. Automatizo infraestructura reproducible en la nube con <strong class="text-primary">AWS y Terraform</strong>, garantizando escalabilidad, consistencia y rigor de producción.
-      </p>
+      <p class="hero-lead" appScrollReveal revealAnimation="fade-up" [revealDelay]="120" [innerHTML]="t().hero.leadHtml"></p>
 
       <!-- Minimalist Core Stack Line (Clean text, no boxes) -->
       <div class="hero-stack-line font-mono" appScrollReveal revealAnimation="fade-up" [revealDelay]="160">
-        <span class="stack-lbl">Core Stack:</span>
+        <span class="stack-lbl">{{ t().hero.stackLabel }}</span>
         <span>Java 21 &bull; Spring Boot 3 &bull; Angular 19 &bull; AWS ECS &bull; Terraform &bull; PostGIS</span>
       </div>
 
       <!-- Action Buttons -->
       <div class="hero-actions" appScrollReveal revealAnimation="fade-up" [revealDelay]="200">
-        <a href="Documents/Hoja%20de%20vida%202026.pdf" download="Hoja de vida 2026 - Daniel Mateo Montoya.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        <a href="Documents/Hoja%20de%20vida%202026.pdf" download="Hoja de vida 2026 - Daniel Mateo Montoya.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary" [attr.aria-label]="t().hero.downloadCvAria">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
           </svg>
-          <span>Descargar Hoja de Vida</span>
+          <span>{{ t().hero.downloadCv }}</span>
         </a>
 
-        <a href="https://github.com/FiloFromZero" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="Perfil de GitHub">
+        <a href="https://github.com/FiloFromZero" target="_blank" rel="noopener noreferrer" class="btn-secondary" [attr.aria-label]="t().hero.githubAria">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
           </svg>
           <span>GitHub &nearr;</span>
         </a>
 
-        <a href="https://www.linkedin.com/in/mateo-montoya-269998248" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="Perfil de LinkedIn">
+        <a href="https://www.linkedin.com/in/mateo-montoya-269998248" target="_blank" rel="noopener noreferrer" class="btn-secondary" [attr.aria-label]="t().hero.linkedinAria">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
           </svg>
@@ -69,7 +67,7 @@
           tabindex="0"
           role="button"
           [attr.aria-pressed]="isCardFlipped()"
-          [attr.aria-label]="isCardFlipped() ? 'Volver a ver la foto de perfil' : 'Girar tarjeta para leer frase de Séneca'"
+          [attr.aria-label]="isCardFlipped() ? t().hero.cardAriaBack : t().hero.cardAriaFront"
         >
           <!-- FRONT FACE: Photo & Minimalist Flip Indicator -->
           <div class="portrait-face portrait-front">
@@ -78,7 +76,7 @@
                 src="images/PERFIL_800.webp"
                 srcset="images/PERFIL_800.webp 800w"
                 sizes="(max-width: 1024px) 280px, 440px"
-                alt="Daniel Mateo Montoya - Ingeniero Full-Stack &amp; Cloud Specialist"
+                [alt]="t().hero.photoAlt"
                 class="portrait-photo"
                 width="800"
                 height="800"
@@ -92,7 +90,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m21.5 2-5 5h4a8.5 8.5 0 1 1-2.5-6"/>
               </svg>
-              <span>Click para girar</span>
+              <span>{{ t().hero.flipPromptFront }}</span>
             </div>
           </div>
 
@@ -101,17 +99,17 @@
             <div class="quote-card-bg-glow" aria-hidden="true"></div>
             
             <div class="quote-header font-mono" aria-hidden="true">
-              <span class="quote-pill">Filosofía estoica</span>
+              <span class="quote-pill">{{ t().hero.quotePill }}</span>
             </div>
 
             <div class="quote-symbol" aria-hidden="true">&ldquo;</div>
 
             <blockquote class="quote-text font-sans">
-              &ldquo;No nos atrevemos a muchas cosas porque son difíciles, pero son difíciles porque no nos atrevemos.&rdquo;
+              {{ t().hero.quoteText }}
             </blockquote>
 
             <cite class="quote-author font-mono">
-              <span class="author-dash">&mdash;</span> Séneca
+              <span class="author-dash">&mdash;</span> {{ t().hero.quoteAuthor }}
             </cite>
 
             <div class="flip-hint-badge back font-mono" aria-hidden="true">
@@ -119,7 +117,7 @@
                 <path d="m3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
                 <path d="M21 3v5h-5"/>
               </svg>
-              <span>Volver a la foto</span>
+              <span>{{ t().hero.flipPromptBack }}</span>
             </div>
           </div>
         </div>
@@ -131,11 +129,11 @@
 
   <!-- Subtle Scroll Down Indicator (Pixel-perfect centered) -->
   <div class="hero-scroll-wrapper">
-    <a href="#experience" class="scroll-down-indicator" aria-label="Desplazarse a experiencia">
+    <a href="#experience" class="scroll-down-indicator" [attr.aria-label]="t().hero.scrollAria">
       <span class="mouse-icon">
         <span class="wheel font-mono"></span>
       </span>
-      <span class="scroll-label font-mono">SCROLL</span>
+      <span class="scroll-label font-mono">{{ t().hero.scrollLabel }}</span>
       <svg class="chevron-down" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
     </a>
   </div>

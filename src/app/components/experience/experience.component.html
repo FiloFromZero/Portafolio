@@ -5,20 +5,20 @@
         appScrollReveal
         revealAnimation="fade-up"
         [revealDelay]="0">
-      Experiencia
+      {{ t().experience.title }}
     </h2>
 
     <p class="section-subtitle"
-       appScrollReveal
-       revealAnimation="fade-up"
-       [revealDelay]="80">
-      Trayectoria técnica construyendo plataformas bancarias, modernización de software y arquitecturas en la nube.
+        appScrollReveal
+        revealAnimation="fade-up"
+        [revealDelay]="80">
+      {{ t().experience.subtitle }}
     </p>
 
     <!-- Clean Log Flow -->
     <div class="log-flow">
       
-      @for (exp of experiences; track exp.role; let i = $index) {
+      @for (exp of experiences(); track exp.role; let i = $index) {
         <article class="log-entry"
                  appScrollReveal
                  revealAnimation="fade-up"

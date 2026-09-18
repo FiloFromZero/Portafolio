@@ -1,7 +1,8 @@
-import { Component, OnDestroy, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 
 import { fadeInUp } from '../../shared/animations/animations';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
+import { TranslationService } from '../../shared/services/translation.service';
 
 @Component({
   selector: 'app-hero',
@@ -13,7 +14,11 @@ import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.dir
   animations: [fadeInUp]
 })
 export class HeroComponent implements OnDestroy {
+  private readonly translationService = inject(TranslationService);
+
   isCardFlipped = signal(false);
+
+  readonly t = this.translationService.t;
 
   private cleanups: (() => void)[] = [];
 
