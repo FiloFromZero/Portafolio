@@ -3,68 +3,65 @@
     
     <h2 class="section-title"
         appScrollReveal revealAnimation="fade-up" [revealDelay]="0">
-      <span>03.</span> ESTUDIOS &amp; CERTIFICACIONES
+      Formación &amp; Certificaciones
     </h2>
     
     <p class="section-subtitle"
-       appScrollReveal revealAnimation="fade-up" [revealDelay]="100">
-      Mi formación académica oficial y las credenciales que respaldan mi experiencia técnica en el ecosistema de software.
+       appScrollReveal revealAnimation="fade-up" [revealDelay]="80">
+      Acreditación universitaria en ingeniería de sistemas y credenciales técnicas oficiales de especialización.
     </p>
 
     <!-- Two Column Grid -->
     <div class="education-grid">
       
-      <!-- Left Column: Education -->
-      <div class="education-col" appScrollReveal revealAnimation="fade-right" [revealDelay]="200">
-        <h3 class="col-title font-mono">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="col-title-icon">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
-          </svg>
-          FORMACIÓN ACADÉMICA
+      <!-- Left Column: Academic Education -->
+      <div class="education-col" appScrollReveal revealAnimation="fade-up" [revealDelay]="120">
+        <h3 class="col-title font-display">
+          Grado Universitario
         </h3>
 
-        <div class="edu-timeline">
+        <div class="edu-card-wrap">
           @for (edu of educationList; track edu.degree) {
-            <div class="edu-item glass-panel">
+            <article class="edu-card editorial-panel">
               <div class="edu-header">
                 <span class="edu-period font-mono">{{ edu.period }}</span>
                 <span class="edu-location font-mono">{{ edu.location }}</span>
               </div>
-              <h4 class="edu-degree">{{ edu.degree }}</h4>
+              <h4 class="edu-degree font-display">{{ edu.degree }}</h4>
               <h5 class="edu-institution font-mono">{{ edu.institution }}</h5>
               @if (edu.description) {
                 <p class="edu-desc">{{ edu.description }}</p>
               }
-            </div>
+            </article>
           }
         </div>
       </div>
 
       <!-- Right Column: Certifications -->
-      <div class="education-col" appScrollReveal revealAnimation="fade-left" [revealDelay]="300">
-        <h3 class="col-title font-mono">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="col-title-icon">
-            <circle cx="12" cy="8" r="7"/>
-            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
-          </svg>
-          CERTIFICACIONES OFICIALES
+      <div class="education-col" appScrollReveal revealAnimation="fade-up" [revealDelay]="160">
+        <h3 class="col-title font-display">
+          Certificaciones Oficiales
         </h3>
 
         <div class="cert-grid">
           @for (cert of certificationsList; track cert.name) {
-            <div class="cert-card glass-panel">
+            <article class="cert-card editorial-panel">
               <div class="cert-body">
                 <h4 class="cert-name">{{ cert.name }}</h4>
-                <span class="cert-issuer font-mono">{{ cert.issuer }} • {{ cert.date }}</span>
+                <div class="cert-meta font-mono">
+                  <span class="cert-issuer">{{ cert.issuer }}</span>
+                  <span class="cert-sep">&bull;</span>
+                  <span class="cert-date">{{ cert.date }}</span>
+                </div>
                 @if (cert.credentialId) {
-                  <span class="cert-id font-mono font-bold text-xs opacity-75 mt-1 block">ID: {{ cert.credentialId }}</span>
+                  <span class="cert-id font-mono">ID: {{ cert.credentialId }}</span>
                 }
               </div>
               @if (cert.verificationUrl) {
                 <div class="cert-action">
-                  <a [href]="cert.verificationUrl" target="_blank" rel="noopener noreferrer" class="cert-link" [attr.aria-label]="'Verificar certificación: ' + cert.name">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <a [href]="cert.verificationUrl" target="_blank" rel="noopener noreferrer" class="cert-link font-mono" [attr.aria-label]="'Verificar credencial oficial: ' + cert.name">
+                    <span>Verificar</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                       <polyline points="15 3 21 3 21 9"/>
                       <line x1="10" y1="14" x2="21" y2="3"/>
@@ -72,7 +69,7 @@
                   </a>
                 </div>
               }
-            </div>
+            </article>
           }
         </div>
       </div>

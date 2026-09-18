@@ -1,34 +1,33 @@
-// Scroll Progress Bar
+// Minimal Scroll Progress Bar
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 1.5px;
   background: linear-gradient(90deg, var(--accent-deep) 0%, var(--accent-primary) 100%);
   transform-origin: left center;
   transform: scaleX(0);
   z-index: 200;
-  box-shadow: 0 0 12px var(--border-glow);
   pointer-events: none;
   will-change: transform;
 }
 
-// Clean Header
+// Minimalist Header
 .hud-header {
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 100;
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-normal);
-  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
 
-  // Estado comprimido al hacer scroll
   &.is-scrolled {
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.12);
+    background: var(--bg-card);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--border-normal);
   }
 }
 
@@ -37,85 +36,92 @@
   margin: 0 auto;
   padding: 1.1rem 1.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
-  min-height: 64px;
-  transition: padding 0.3s ease;
+  min-height: 58px;
+  transition: padding 0.25s ease;
+}
 
-  .hud-header.is-scrolled & {
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+.hud-brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--accent-primary);
+    }
   }
 }
 
 .hud-nav {
   display: flex;
-  gap: 2.5rem;
+  gap: 2.2rem;
   align-items: center;
 
   .nav-link {
     font-family: var(--font-sans);
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
+    font-size: 0.92rem;
+    font-weight: 400;
+    transition: var(--transition-smooth);
 
     &:hover {
-      color: var(--accent-primary);
-      text-shadow: 0 0 10px var(--border-glow);
+      color: var(--text-primary);
     }
 
     &.active {
       color: var(--accent-primary);
-      text-shadow: 0 0 10px var(--border-glow);
       font-weight: 600;
     }
   }
 }
 
 .hud-actions {
-  position: absolute;
-  right: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
-// Theme switch button
+// Minimal Theme switch button
 .theme-toggle-btn {
   background: transparent;
-  border: 1px solid var(--border-normal);
+  border: 1px solid transparent;
   color: var(--text-secondary);
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-smooth);
 
   &:hover {
-    border-color: var(--accent-primary);
     color: var(--accent-primary);
-    background: rgba(240, 180, 155, 0.05);
-    transform: rotate(45deg) scale(1.05);
+    background: rgba(var(--accent-primary-rgb), 0.08);
   }
 
   .theme-icon {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2.2;
-    transition: transform 0.3s ease;
+    width: 17px;
+    height: 17px;
+    stroke-width: 2;
+    transition: transform 0.25s ease;
 
     &.sun {
       color: #f59e0b;
     }
 
     &.moon {
-      color: var(--accent-light);
+      color: var(--accent-primary);
     }
   }
 }
@@ -124,43 +130,41 @@
 .hamburger-btn {
   background: transparent;
   border: 1px solid var(--border-normal);
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   cursor: pointer;
   padding: 0;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
 
   .bar {
-    width: 18px;
-    height: 2px;
+    width: 16px;
+    height: 1.5px;
     background-color: var(--text-primary);
-    border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &:hover {
     border-color: var(--accent-primary);
-    background: rgba(240, 180, 155, 0.05);
   }
 
   &.open {
     border-color: var(--accent-primary);
 
     .bar:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
+      transform: translateY(5.5px) rotate(45deg);
     }
     .bar:nth-child(2) {
       opacity: 0;
       transform: scaleX(0);
     }
     .bar:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+      transform: translateY(-5.5px) rotate(-45deg);
     }
   }
 }
@@ -179,12 +183,257 @@
   }
 }
 
+header.mobile-only {
+  display: none;
+  @media (max-width: 768px) {
+    display: block !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 1. UBUNTU-STYLE AUTO-REVEAL DOCK (Desktop)
+// ---------------------------------------------------------------------------
+.ubuntu-dock-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  z-index: 150;
+  transition: width 0.2s ease;
+
+  &:hover {
+    width: 80px;
+
+    .ubuntu-dock {
+      transform: translateY(-50%) translateX(0);
+      box-shadow: 14px 0 45px rgba(0, 0, 0, 0.22);
+    }
+
+    .dock-peek-trigger {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-50%) translateX(-10px);
+    }
+  }
+}
+
+// Subtle interactive peek tab on the left screen edge
+.dock-peek-trigger {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(0);
+  z-index: 151;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .peek-tab {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px 8px 9px;
+    background: var(--dock-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--dock-border);
+    border-left: none;
+    border-radius: 0 9999px 9999px 0;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.25s ease;
+
+    .peek-menu-icon {
+      color: var(--accent-primary);
+      flex-shrink: 0;
+      stroke-width: 2.2;
+    }
+
+    .peek-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      line-height: 1;
+      transition: color 0.2s ease;
+    }
+
+    .peek-chevron {
+      color: var(--accent-primary);
+      transition: transform 0.25s ease;
+      animation: nudgeRight 2.2s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+  }
+
+  &:hover .peek-tab {
+    background: rgba(var(--accent-primary-rgb), 0.16);
+    border-color: var(--accent-primary);
+    padding-left: 11px;
+    padding-right: 15px;
+
+    .peek-text {
+      color: var(--accent-primary);
+    }
+  }
+}
+
+@keyframes nudgeRight {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+// Ubuntu Dock Bar (Refined & balanced proportions)
+.ubuntu-dock {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-100%);
+  z-index: 152;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: clamp(470px, 66vh, 580px);
+  padding: 1.35rem 0.75rem;
+  background: var(--dock-bg);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--dock-border);
+  border-left: none;
+  border-radius: 0 20px 20px 0;
+  box-shadow: 12px 0 36px rgba(0, 0, 0, 0.13);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+
+  .dock-app-launcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: rgba(var(--accent-primary-rgb), 0.14);
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.92rem;
+    transition: var(--transition-smooth);
+
+    &:hover {
+      background: var(--accent-primary);
+      color: var(--btn-primary-text);
+      transform: scale(1.08);
+
+      .dock-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
+      }
+    }
+  }
+
+  .dock-divider {
+    width: 26px;
+    height: 1px;
+    background: var(--border-normal);
+    margin: 0.3rem 0;
+  }
+
+  .dock-apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.05rem;
+    margin: auto 0;
+  }
+
+  .dock-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+
+    .running-pip {
+      position: absolute;
+      left: -13px;
+      width: 3.5px;
+      height: 18px;
+      border-radius: 0 4px 4px 0;
+      background: transparent;
+      transition: all 0.25s ease;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      color: var(--accent-primary);
+      background: rgba(var(--accent-primary-rgb), 0.12);
+      transform: scale(1.08);
+
+      .dock-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
+      }
+    }
+
+    &.active {
+      color: var(--accent-primary);
+      background: rgba(var(--accent-primary-rgb), 0.16);
+
+      .running-pip {
+        background: var(--accent-primary);
+        box-shadow: 0 0 8px var(--accent-primary);
+      }
+    }
+  }
+
+  .dock-tooltip {
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-6px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-normal);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+
+
 // Mobile Navigation Drawer
 .mobile-nav-backdrop {
   position: fixed;
   inset: 0;
-  top: 65px;
-  background: rgba(0, 0, 0, 0.5);
+  top: 58px;
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 98;
@@ -200,18 +449,17 @@
     top: 100%;
     left: 0;
     width: 100%;
-    padding: 1.5rem;
-    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    gap: 0.5rem;
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-normal);
-    border-top: 1px solid var(--border-normal);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-    transform: translateY(-10px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 99;
 
     &.open {
@@ -223,56 +471,80 @@
 
   .mobile-nav-link {
     font-family: var(--font-sans);
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--text-secondary);
     text-decoration: none;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
+    padding: 0.75rem 0.5rem;
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: all 0.2s ease;
-
-    span {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--accent-primary);
-    }
+    transition: var(--transition-smooth);
 
     &:hover,
     &.active {
       color: var(--accent-primary);
-      background: rgba(240, 180, 155, 0.08);
+    }
+  }
+
+  .mobile-drawer-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border-normal);
+    margin: 0.5rem 0;
+  }
+
+  .mobile-theme-row-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: var(--transition-smooth);
+
+    .theme-row-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    .theme-row-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-normal);
+
+      .sun { color: #f59e0b; }
+      .moon { color: var(--accent-primary); }
+    }
+
+    &:hover {
+      color: var(--accent-primary);
+      background: rgba(var(--accent-primary-rgb), 0.06);
     }
   }
 }
 
-// Main container
+// Main Flow Container
 .portfolio-container {
   display: flex;
   flex-direction: column;
 }
 
-.section-divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--border-normal) 50%,
-    transparent 100%
-  );
-  opacity: 0.6;
-  transition: background 0.3s ease;
-}
-
-// Rich Footer
+// Minimal Footer
 .hud-footer {
   width: 100%;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-top: 1px solid var(--border-normal);
-  padding: 3rem 1.5rem 2rem 1.5rem;
+  padding: 4rem 1.5rem 3rem 1.5rem;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -294,29 +566,29 @@
   @media (max-width: 768px) {
     flex-direction: column;
     text-align: center;
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 }
 
 .footer-brand {
   .footer-logo {
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
     display: block;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
   }
 
   .footer-tagline {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--text-muted);
   }
 }
 
 .footer-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.8rem;
   flex-wrap: wrap;
   justify-content: center;
 
@@ -340,10 +612,10 @@
 
 .social-icon-btn,
 .back-to-top-btn {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: var(--bg-tertiary);
+  background: transparent;
   border: 1px solid var(--border-normal);
   color: var(--text-secondary);
   display: flex;
@@ -351,13 +623,13 @@
   justify-content: center;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-smooth);
 
   &:hover {
     border-color: var(--accent-primary);
     color: var(--accent-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--border-glow);
+    background: rgba(var(--accent-primary-rgb), 0.06);
+    transform: translateY(-1px);
   }
 }
 
@@ -368,4 +640,3 @@
   font-size: 0.82rem;
   color: var(--text-muted);
 }
-

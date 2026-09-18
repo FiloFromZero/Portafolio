@@ -3,42 +3,147 @@
     
     <h2 class="section-title"
         appScrollReveal revealAnimation="fade-up" [revealDelay]="0">
-      <span>02.</span> STACK TECNOLÓGICO
+      Stack Tecnológico
     </h2>
     
     <p class="section-subtitle"
-       appScrollReveal revealAnimation="fade-up" [revealDelay]="100">
-      Tecnologías y herramientas que domino y empleo activamente en mis desarrollos.
+       appScrollReveal revealAnimation="fade-up" [revealDelay]="80">
+      Ecosistema de ingeniería categorizado por rol. Selecciona una categoría y pulsa sobre cualquier tecnología en el carrusel para abrir su ficha técnica, casos de uso e implementación en proyectos reales.
     </p>
 
-    <!-- Category Filter Tabs -->
-    <div class="tech-tabs" appScrollReveal revealAnimation="fade-up" [revealDelay]="150">
-      @for (cat of categories; track cat) {
-        <button 
-          class="tech-tab-btn" 
-          [class.active]="activeCategory() === cat"
-          (click)="setCategory(cat)">
-          {{ cat }}
+    <!-- 1. ROLE CATEGORIZATION TABS (Opciones categorizadas) -->
+    <div class="role-tabs-bar" 
+         appScrollReveal revealAnimation="fade-up" [revealDelay]="120"
+         role="tablist" 
+         aria-label="Filtrar tecnologías por rol">
+      @for (role of roles; track role.id) {
+        <button type="button"
+                role="tab"
+                class="role-tab-btn"
+                [class.is-active]="activeRole() === role.id"
+                [attr.aria-selected]="activeRole() === role.id"
+                (click)="setRole(role.id)">
+          <span>{{ role.label }}</span>
+          <span class="tab-count font-mono">{{ role.count }}</span>
         </button>
       }
     </div>
 
-    <!-- Minimalistic Tech Grid -->
-    <div class="tech-grid">
-      @for (tech of filteredTechs(); track tech.name; let i = $index) {
-        <div class="tech-card-minimal glass-panel" 
-             [style.--glow-color]="tech.glowColor"
-             appScrollReveal revealAnimation="zoom-in" [revealDelay]="(i % 6) * 60"
-             appMouseFollow>
-          
-          <div class="tech-icon-wrapper">
-            <img [src]="tech.logoUrl" [alt]="tech.name + ' logo'" class="tech-icon-img" width="26" height="26" loading="lazy" decoding="async">
-          </div>
-
-          <div class="tech-name font-mono">{{ tech.name }}</div>
-        </div>
-      }
+    <!-- 2. SUBTLE CONTINUOUS CAROUSEL (Carrusel interactivo filtrado por rol) -->
+    <div class="carousel-overview" 
+         appScrollReveal revealAnimation="fade-up" [revealDelay]="160"
+         aria-label="Carrusel interactivo del stack tecnológico">
+      <div class="carousel-track">
+        @for (tech of carouselTrackTechs(); track $index) {
+          <button type="button" 
+                  class="carousel-pill" 
+                  (click)="openTechPopup(tech)"
+                  [title]="'Abrir ficha técnica de ' + tech.name">
+            <div class="pill-icon-box">
+              <img [src]="tech.logoUrl" 
+                   [alt]="tech.name + ' logo'" 
+                   class="pill-icon" 
+                   width="18" 
+                   height="18" 
+                   loading="lazy" 
+                   decoding="async">
+            </div>
+            <div class="pill-content">
+              <span class="pill-name font-sans">{{ tech.name }}</span>
+              <span class="pill-tag font-mono">{{ tech.tag }}</span>
+            </div>
+            <span class="pill-arrow" aria-hidden="true">&nearr;</span>
+          </button>
+        }
+      </div>
     </div>
 
+    <!-- 3. Minimal Helper Hint -->
+    <p class="carousel-hint font-mono" appScrollReveal revealAnimation="fade-up" [revealDelay]="200">
+      <span class="hint-bullet">&bull;</span>
+      <span>Pulsa sobre cualquier tecnología del carrusel para desplegar su ficha técnica, casos de uso y proyectos vinculados.</span>
+    </p>
+
   </div>
+
+  <!-- 4. MODAL POP-UP DIALOG (Detalle emergente interactivo) -->
+  @if (selectedTech(); as tech) {
+    <div class="tech-modal-backdrop" 
+         (click)="closeTechPopup()" 
+         aria-hidden="true" 
+         @fadeInOverlay></div>
+    
+    <div class="tech-modal-wrapper" role="dialog" aria-modal="true" [attr.aria-label]="'Detalles de ' + tech.name">
+      <div class="tech-modal editorial-panel" @popupModal>
+        
+        <!-- Modal Header -->
+        <header class="modal-header">
+          <div class="header-main">
+            <div class="modal-icon-box">
+              <img [src]="tech.logoUrl" [alt]="tech.name + ' logo'" width="28" height="28">
+            </div>
+            <div class="header-titles">
+              <div class="cat-tag font-mono">{{ tech.categoryLabel }} &bull; {{ tech.tag }}</div>
+              <h3 class="modal-title font-display">{{ tech.name }}</h3>
+            </div>
+          </div>
+
+          <button type="button" 
+                  class="modal-close-btn" 
+                  (click)="closeTechPopup()" 
+                  aria-label="Cerrar ventana de detalles">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </header>
+
+        <!-- Modal Summary -->
+        <p class="modal-summary">{{ tech.role }}</p>
+
+        <!-- Uses Section -->
+        <section class="modal-section">
+          <h4 class="section-heading font-mono">USOS Y CAPACIDADES EN PRODUCCIÓN</h4>
+          <ul class="uses-list">
+            @for (use of tech.uses; track use) {
+              <li>
+                <span class="bullet font-mono">&rarr;</span>
+                <span class="text">{{ use }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <!-- Projects Usage Section -->
+        <section class="modal-section">
+          <h4 class="section-heading font-mono">IMPLEMENTADO EN LOS PROYECTOS</h4>
+          <div class="projects-list">
+            @for (proj of tech.projects; track proj.id) {
+              <div class="project-usage-card">
+                <div class="proj-header">
+                  <span class="proj-name font-display">{{ proj.name }}</span>
+                  <a href="#projects" 
+                     class="proj-link font-mono" 
+                     (click)="scrollToProject(proj.id, $event)">
+                    Ver proyecto &nearr;
+                  </a>
+                </div>
+                <p class="proj-impl">{{ proj.implementation }}</p>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Modal Footer -->
+        <footer class="modal-footer">
+          <button type="button" class="btn-secondary font-sans" (click)="closeTechPopup()">
+            Cerrar ficha
+          </button>
+        </footer>
+
+      </div>
+    </div>
+  }
+
 </section>

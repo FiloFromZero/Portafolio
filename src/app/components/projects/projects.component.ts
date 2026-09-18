@@ -2,23 +2,31 @@ import { Component, ElementRef, HostListener, ViewChild, ChangeDetectionStrategy
 
 import { popupModal, fadeInOverlay, fadeInUp } from '../../shared/animations/animations';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
-import { MouseFollowDirective } from '../../shared/directives/mouse-follow.directive';
 
 export interface ArchitectureDetail {
   title: string;
   points: string[];
 }
 
+export interface TopologyNode {
+  label: string;
+  sub: string;
+  type?: 'client' | 'gateway' | 'core' | 'data' | 'cloud';
+}
+
 export interface Project {
   id: string;
+  caseNumber: string;
   title: string;
   category: string;
   desc: string;
+  problemStatement: string;
   tech: string[];
   github?: string;
   liveDemo?: string;
   featured?: boolean;
   metrics?: { label: string; value: string }[];
+  topologyNodes: TopologyNode[];
   details?: {
     summary: string;
     sections: ArchitectureDetail[];
@@ -29,7 +37,7 @@ export interface Project {
   selector: 'app-projects',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ ScrollRevealDirective, MouseFollowDirective],
+  imports: [ScrollRevealDirective],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
   animations: [popupModal, fadeInOverlay, fadeInUp]
@@ -42,16 +50,24 @@ export class ProjectsComponent {
   projects: Project[] = [
     {
       id: 'kata-bbog',
+      caseNumber: 'CASE.01',
       title: 'Plataforma de Gestión de Clientes - Banco de Bogotá',
       category: 'Hexagonal Architecture & Multi-Cloud CI/CD',
-      desc: 'API REST y SPA para gestión de clientes con arquitectura hexagonal, seguridad JWT, despliegue automatizado con Terraform en AWS EC2/S3 y pipelines de GitHub Actions.',
-      tech: ['Java 21', 'Spring Boot', 'Spring Security', 'Angular 19', 'PostgreSQL', 'Docker', 'Terraform', 'AWS EC2/S3', 'GitHub Actions'],
+      desc: 'API REST y SPA para gestión de clientes con arquitectura hexagonal, autenticación JWT, despliegue automatizado con Terraform en AWS EC2/S3 y pipelines de GitHub Actions.',
+      problemStatement: 'Desacoplar la lógica bancaria de los adaptadores de infraestructura, garantizando paridad entre ambientes DEV/PROD con infraestructura reproducible como código.',
+      tech: ['Java 21', 'Spring Boot 3', 'Spring Security', 'Angular 19', 'PostgreSQL', 'Docker', 'Terraform', 'AWS EC2/S3', 'GitHub Actions'],
       github: 'https://github.com/FiloFromZero/kata_bbog',
       featured: true,
       metrics: [
         { label: 'Pruebas Integrales', value: '59 Tests Green' },
         { label: 'Ambientes Activos', value: 'DEV y PROD' },
         { label: 'Despliegue IaC', value: 'Terraform Automático' }
+      ],
+      topologyNodes: [
+        { label: 'Angular 19 SPA', sub: 'Client UI · S3 Hosted', type: 'client' },
+        { label: 'Spring Security + JWT', sub: 'Stateless Ingress Auth', type: 'gateway' },
+        { label: 'Hexagonal Core', sub: 'Java 21 · Ports & Adapters', type: 'core' },
+        { label: 'AWS EC2 + S3 + RDS', sub: 'Terraform IaC Automated', type: 'cloud' }
       ],
       details: {
         summary: 'Registro y consulta de clientes en la nube con arquitectura hexagonal, pruebas exhaustivas y ambientes diferenciados (DEV/PROD).',
@@ -60,16 +76,16 @@ export class ProjectsComponent {
             title: 'ARQUITECTURA Y BACKEND',
             points: [
               'Arquitectura Hexagonal (Clean Architecture) en Java 21 + Spring Boot 3.x.',
-              'Persistencia desacoplada con JPA/PostgreSQL.',
-              'Seguridad por HTTP Basic Auth y filtros JWT.'
+              'Persistencia desacoplada con JPA/PostgreSQL mediante adaptadores de salida.',
+              'Seguridad por HTTP Basic Auth y filtros JWT stateless.'
             ]
           },
           {
             title: 'FRONTEND, DEVOPS & CI/CD',
             points: [
-              'Frontend SPA en Angular 19 con diseño responsivo.',
+              'Frontend SPA en Angular 19 con diseño responsivo y arquitectura modular.',
               'Infraestructura como Código (IaC) con Terraform para AWS EC2 y S3.',
-              'Pipelines en GitHub Actions para pruebas y despliegue automático.'
+              'Pipelines en GitHub Actions para pruebas y despliegue continuo.'
             ]
           }
         ]
@@ -77,16 +93,24 @@ export class ProjectsComponent {
     },
     {
       id: 'cloud-kata',
-      title: 'Sistema de Gestión de Aprobaciones',
-      category: 'Cloud, IaC & DevOps',
-      desc: 'Sistema distribuido de aprobaciones jerárquicas con automatización IaC y despliegue elástico serverless en AWS.',
-      tech: ['Java 21', 'Spring Boot', 'Spring Security', 'PostgreSQL', 'Flyway', 'Terraform', 'AWS ECS', 'GitHub Actions'],
+      caseNumber: 'CASE.02',
+      title: 'Sistema de Gestión de Aprobaciones Cloud',
+      category: 'Cloud-Native, AWS ECS & IaC',
+      desc: 'Sistema distribuido de aprobaciones jerárquicas con automatización de infraestructura como código (IaC) y despliegue elástico en AWS ECS Fargate.',
+      problemStatement: 'Orquestar microservicios contenerizados de alta disponibilidad con balanceo de carga automático y migraciones de base de datos sin tiempo de inactividad.',
+      tech: ['Java 21', 'Spring Boot 3', 'Spring Security', 'PostgreSQL', 'Flyway', 'Terraform', 'AWS ECS Fargate', 'GitHub Actions'],
       github: 'https://github.com/FiloFromZero/Kata_DesarrolladorCloud',
       featured: true,
       metrics: [
         { label: 'Contenedores ECS', value: '3 Tareas Activas' },
         { label: 'Recursos IaC', value: '12 Gestionados' },
         { label: 'Migraciones DB', value: '100% Flyway Sync' }
+      ],
+      topologyNodes: [
+        { label: 'Application Load Balancer', sub: 'AWS ALB · Traffic Ingress', type: 'gateway' },
+        { label: 'AWS ECS Fargate', sub: '3 Container Tasks · Docker', type: 'core' },
+        { label: 'PostgreSQL RDS', sub: 'Flyway Migration Sync', type: 'data' },
+        { label: 'Terraform State', sub: 'Encrypted S3 Backend', type: 'cloud' }
       ],
       details: {
         summary: 'Aplicación nativa en la nube (Cloud-Native) diseñada para alta disponibilidad, desplegada sobre contenedores AWS ECS Fargate.',
@@ -101,7 +125,7 @@ export class ProjectsComponent {
           {
             title: 'BACKEND Y BASE DE DATOS',
             points: [
-              'Contenedores Docker optimizados para Spring Boot 3.',
+              'Contenedores Docker optimizados multi-stage para Spring Boot 3.',
               'Gestión de versiones de base de datos con scripts Flyway integrados al pipeline.'
             ]
           }
@@ -110,15 +134,23 @@ export class ProjectsComponent {
     },
     {
       id: 'transmiapp',
-      title: 'Transmiapp',
-      category: 'Backend & Spatial Database',
-      desc: 'Motor de cálculo de rutas eficientes sobre la red de transporte público utilizando PostgreSQL y la extensión espacial PostGIS.',
+      caseNumber: 'CASE.03',
+      title: 'Transmiapp - Motor de Ruteo Espacial',
+      category: 'Spatial Database & Graph Engine',
+      desc: 'Motor de cálculo de rutas eficientes sobre la red de transporte público utilizando PostgreSQL y la extensión espacial PostGIS con indexación GiST.',
+      problemStatement: 'Procesar coordenadas geográficas masivas en tiempo real y calcular trayectorias de transbordo en milisegundos sin sobrecargar la CPU.',
       tech: ['Node.js', 'Express', 'PostgreSQL', 'PostGIS', 'Docker Compose', 'GIS Spatial Indexing'],
       github: 'https://github.com/FiloFromZero/Transmiapp',
       metrics: [
         { label: 'Latencia Ruteo', value: '< 6ms' },
         { label: 'Indexación', value: 'GiST Spatial' },
         { label: 'API Throughput', value: '1.2k req/seg' }
+      ],
+      topologyNodes: [
+        { label: 'Express REST API', sub: 'Asynchronous Event Loop', type: 'gateway' },
+        { label: 'Spatial Graph Engine', sub: 'ST_DWithin Route Calculation', type: 'core' },
+        { label: 'PostgreSQL + PostGIS', sub: 'GiST Spatial Index (<6ms)', type: 'data' },
+        { label: 'Docker Compose', sub: 'Containerized GIS Environment', type: 'cloud' }
       ],
       details: {
         summary: 'API Node.js diseñada para cálculo de grafos geoespaciales y rutas óptimas de transporte masivo.',
@@ -142,15 +174,22 @@ export class ProjectsComponent {
     },
     {
       id: 'pagina-jpii',
+      caseNumber: 'CASE.04',
       title: 'Portal Educativo JPII',
-      category: 'Frontend & Static Delivery',
-      desc: 'Landing page y blog estático de alto rendimiento para institución educativa. Optimizaciones SEO y carga veloz.',
+      category: 'Frontend & Edge Delivery (SSG)',
+      desc: 'Portal web institucional de alto rendimiento construido con Astro 4 y Tailwind CSS. Optimización extrema de Core Web Vitals y entrega vía CDN global.',
+      problemStatement: 'Garantizar tiempos de carga instantáneos en dispositivos móviles de gama baja y asegurar 100% de cumplimiento en accesibilidad y SEO.',
       tech: ['Astro 4.0', 'Tailwind CSS', 'TypeScript', 'Netlify CDN', 'Netlify Actions'],
       liveDemo: 'https://iejuanpabloiisoacha.edu.co/',
       metrics: [
         { label: 'Puntaje Lighthouse', value: '100 / 100' },
         { label: 'Velocidad FCP', value: '0.4s' },
         { label: 'Tamaño Carga', value: '42 KB' }
+      ],
+      topologyNodes: [
+        { label: 'Netlify Edge CDN', sub: 'Global Multi-Region Cache', type: 'gateway' },
+        { label: 'Astro Island Engine', sub: 'Zero JS Initial Hydration', type: 'core' },
+        { label: 'Lighthouse 100/100', sub: 'FCP 0.4s · 42KB Total Bundle', type: 'client' }
       ],
       details: {
         summary: 'Sitio estático (SSG) de grado de producción con métricas web core perfectas, construido con Astro.',
@@ -166,7 +205,7 @@ export class ProjectsComponent {
           {
             title: 'DISEÑO UI / UX',
             points: [
-              'Sistema de diseño responsivo basado en utility classes (Tailwind CSS).',
+              'Sistema de diseño responsivo y tipografía accesible.',
               'Auditoría y cumplimiento 100% en Lighthouse (Performance, A11y, SEO).'
             ]
           }
@@ -175,18 +214,25 @@ export class ProjectsComponent {
     },
     {
       id: 'scrum-final-project',
-      title: 'DriveMaster',
-      category: 'Software Engineering & Scrum',
-      desc: 'Sistema de Gestión basado en Suscripción para Academias de Conducción Colombianas',
-      tech: ['Clean Architecture', 'GitHub Actions CI', 'JUnit', 'Scrum SDLC', 'Integration Testing'],
+      caseNumber: 'CASE.05',
+      title: 'DriveMaster - Plataforma de Academias de Conducción',
+      category: 'Software Engineering & Clean Architecture',
+      desc: 'Sistema de gestión de suscripciones para academias de conducción con alta cobertura de pruebas automatizadas y ciclo iterativo ágil Scrum.',
+      problemStatement: 'Modelar un dominio complejo con múltiples reglas de negocio y dependencias desacopladas, validando el sistema mediante integración continua estricta.',
+      tech: ['Java', 'Clean Architecture', 'GitHub Actions CI', 'JUnit', 'Scrum SDLC'],
       github: 'https://github.com/cristianar1008/software-engineering-seminar-final-project',
       metrics: [
         { label: 'Cobertura Pruebas', value: '94.2% Passed' },
         { label: 'Pipeline CI', value: 'Green (14 runs)' },
         { label: 'Velocidad Scrum', value: '38 pts/Sprint' }
       ],
+      topologyNodes: [
+        { label: 'Clean Architecture', sub: 'Domain Driven / SOLID Design', type: 'core' },
+        { label: 'JUnit & Mockito', sub: '94.2% Passed Test Suite', type: 'data' },
+        { label: 'GitHub Actions CI', sub: '14 Consecutive Green Runs', type: 'cloud' }
+      ],
       details: {
-        summary: 'Aplicación monolítica robusta desarrollada en equipo, simulando un ciclo de vida real mediante metodologías ágiles.',
+        summary: 'Aplicación robusta desarrollada en equipo, simulando un ciclo de vida real mediante metodologías ágiles.',
         sections: [
           {
             title: 'PROCESO DE INGENIERÍA',
@@ -199,7 +245,7 @@ export class ProjectsComponent {
             title: 'CALIDAD DE SOFTWARE',
             points: [
               'Alta cobertura de pruebas unitarias y de integración (JUnit / Mockito).',
-              'Aplicación estricta de principios SOLID y arquitectura limpia (Clean Architecture).'
+              'Aplicación estricta de principios SOLID y arquitectura limpia.'
             ]
           }
         ]
@@ -209,13 +255,6 @@ export class ProjectsComponent {
 
   activePreviewProjectId: string | null = null;
   activeProject: Project | null = null;
-
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    if (this.activePreviewProjectId) {
-      this.closePreview();
-    }
-  }
 
   private lastTriggerElement: HTMLElement | null = null;
 
@@ -238,7 +277,6 @@ export class ProjectsComponent {
     this.activeProject = this.projects.find(p => p.id === projectId) || null;
     this.lockBodyScroll(true);
     this.cdr.markForCheck();
-    // Move focus into the dialog for keyboard accessibility
     setTimeout(() => {
       const closeBtn = this.previewPane?.nativeElement.querySelector<HTMLElement>('.btn-close');
       if (closeBtn) {
@@ -255,7 +293,6 @@ export class ProjectsComponent {
     this.activeProject = null;
     this.lockBodyScroll(false);
     this.cdr.markForCheck();
-    // Restore focus to trigger button
     if (this.lastTriggerElement && typeof this.lastTriggerElement.focus === 'function') {
       setTimeout(() => this.lastTriggerElement?.focus(), 50);
     }

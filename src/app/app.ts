@@ -32,7 +32,7 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   scrollProgress = signal(0);
   isHeaderScrolled = signal(false);
 
-  private readonly sectionIds = ['hero', 'experience', 'tech-stack', 'education', 'projects'];
+  private readonly sectionIds = ['hero', 'experience', 'tech-stack', 'projects', 'education'];
   private observer?: IntersectionObserver;
   private scrollCleanups: (() => void)[] = [];
 
@@ -133,10 +133,12 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
             .filter((e) => e.isIntersecting)
             .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
           if (visible && this.activeSection() !== visible.target.id) {
-            this.activeSection.set(visible.target.id);
+            this.ngZone.run(() => {
+              this.activeSection.set(visible.target.id);
+            });
           }
         },
-        { rootMargin: '-20% 0px -65% 0px', threshold: [0, 0.15, 0.4] }
+        { rootMargin: '-15% 0px -45% 0px', threshold: [0, 0.1, 0.25, 0.5] }
       );
 
       this.sectionIds.forEach((id) => {

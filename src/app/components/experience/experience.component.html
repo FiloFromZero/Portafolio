@@ -5,75 +5,66 @@
         appScrollReveal
         revealAnimation="fade-up"
         [revealDelay]="0">
-      <span>01.</span> EXPERIENCIA &amp; TRAYECTORIA
+      Experiencia
     </h2>
 
     <p class="section-subtitle"
        appScrollReveal
        revealAnimation="fade-up"
-       [revealDelay]="100">
-      Trayectoria técnica construyendo plataformas robustas, infraestructura cloud y arquitecturas de alto rendimiento.
+       [revealDelay]="80">
+      Trayectoria técnica construyendo plataformas bancarias, modernización de software y arquitecturas en la nube.
     </p>
 
-    <!-- Timeline Container -->
-    <div class="timeline-container">
+    <!-- Clean Log Flow -->
+    <div class="log-flow">
       
-      @for (exp of experiences; track exp.role; let i = $index; let isLast = $last) {
-        <div class="timeline-item"
-             appScrollReveal
-             revealAnimation="fade-left"
-             [revealDelay]="i * 120">
+      @for (exp of experiences; track exp.role; let i = $index) {
+        <article class="log-entry"
+                 appScrollReveal
+                 revealAnimation="fade-up"
+                 [revealDelay]="i * 120">
           
-          <!-- Timeline Marker / Node -->
-          <div class="timeline-node">
-            <div class="node-dot"></div>
-            @if (!isLast) {
-              <div class="node-line"></div>
-            }
-          </div>
-  
-          <!-- Experience Content Card -->
-          <div class="timeline-content glass-panel" appMouseFollow>
-            
-            <div class="card-header">
-              <div class="header-main">
-                <span class="period font-mono">{{ exp.period }}</span>
-                @if (exp.badge) {
-                  <span class="badge">{{ exp.badge }}</span>
-                }
+          <!-- Entry Header -->
+          <header class="entry-header">
+            <div class="entry-title-group">
+              <h3 class="role-title font-display">{{ exp.role }}</h3>
+              <div class="company-row">
+                <span class="company-name font-mono">{{ exp.company }}</span>
+                <span class="sep">&bull;</span>
+                <span class="scope-text font-mono">{{ exp.scope }}</span>
               </div>
-              <span class="location font-mono">{{ exp.location }}</span>
             </div>
-  
-            <h3 class="role-title">{{ exp.role }}</h3>
-            <h4 class="company-name font-mono">{{ exp.company }}</h4>
-  
-            <p class="experience-desc">{{ exp.description }}</p>
-  
-            <!-- Key Highlights / Achievements -->
-            <ul class="highlights-list">
-              @for (hl of exp.highlights; track hl) {
-                <li>
-                  <span class="hl-bullet">▹</span>
-                  <span class="hl-text">{{ hl }}</span>
-                </li>
-              }
-            </ul>
-  
-            <!-- Tech Stack Tags -->
-            <div class="tech-stack">
-              @for (tech of exp.technologies; track tech) {
-                <span class="badge-gray">{{ tech }}</span>
-              }
+
+            <div class="entry-meta font-mono">
+              <span class="period-text">{{ exp.period }}</span>
+              <span class="location-text">{{ exp.location }}</span>
             </div>
-  
-          </div>
-  
-        </div>
+          </header>
+
+          <!-- Mission Context -->
+          <p class="entry-desc">{{ exp.description }}</p>
+
+          <!-- Engineering Milestones -->
+          <ul class="milestones-list">
+            @for (hl of exp.highlights; track hl) {
+              <li>
+                <span class="bullet font-mono">&mdash;</span>
+                <span class="milestone-text">{{ hl }}</span>
+              </li>
+            }
+          </ul>
+
+          <!-- Stack Tokens -->
+          <footer class="entry-stack">
+            @for (tech of exp.technologies; track tech) {
+              <span class="badge-gray font-mono">{{ tech }}</span>
+            }
+          </footer>
+
+        </article>
       }
 
     </div>
 
   </div>
 </section>
-

@@ -5,90 +5,98 @@
         appScrollReveal
         revealAnimation="fade-up"
         [revealDelay]="0">
-      <span>04.</span> PROYECTOS &amp; DESARROLLOS
+      Proyectos
     </h2>
+
+    <p class="section-subtitle"
+       appScrollReveal
+       revealAnimation="fade-up"
+       [revealDelay]="80">
+      Casos de estudio de ingeniería con arquitectura desacoplada, métricas comprobadas en producción y código fuente.
+    </p>
     
-    <!-- Gallery Grid -->
-    <div class="projects-grid">
+    <!-- Projects Dossier Stream -->
+    <div class="dossier-stream">
       @for (project of projects; track project.id; let i = $index) {
-        <div class="project-card glass-panel" 
-             appScrollReveal
-             revealAnimation="zoom-in"
-             [revealDelay]="(i % 6) * 90"
-             appMouseFollow>
+        <article class="dossier-card editorial-panel" 
+                 appScrollReveal
+                 revealAnimation="fade-up"
+                 [revealDelay]="i * 100">
              
-          <div class="project-header">
-            <div class="project-header-left">
-              <span class="project-category font-mono">{{ project.category }}</span>
-              @if (project.featured) {
-                <span class="badge featured-badge ml-2 font-mono" style="font-size: 0.65rem; padding: 0.15rem 0.5rem;">Destacado</span>
-              }
+          <!-- Header -->
+          <header class="dossier-header">
+            <div class="header-main">
+              <h3 class="project-title font-display">{{ project.title }}</h3>
+              <div class="category-row">
+                <span class="case-category font-mono">{{ project.category }}</span>
+                @if (project.featured) {
+                  <span class="badge featured-badge font-mono">DESTACADO</span>
+                }
+              </div>
             </div>
             
-            <div class="project-links">
+            <div class="header-links font-mono">
               @if (project.github) {
-                <a [href]="project.github" target="_blank" rel="noopener noreferrer" class="github-link" (click)="$event.stopPropagation()" [attr.aria-label]="'Repositorio GitHub de ' + project.title">
+                <a [href]="project.github" target="_blank" rel="noopener noreferrer" class="link-btn" (click)="$event.stopPropagation()" [attr.aria-label]="'Repositorio GitHub de ' + project.title">
                   GitHub &nearr;
                 </a>
               }
               @if (project.liveDemo) {
-                <a [href]="project.liveDemo" target="_blank" rel="noopener noreferrer" class="github-link text-accent ml-2" (click)="$event.stopPropagation()" [attr.aria-label]="'Demo en vivo de ' + project.title">
+                <a [href]="project.liveDemo" target="_blank" rel="noopener noreferrer" class="link-btn text-accent ml-2" (click)="$event.stopPropagation()" [attr.aria-label]="'Demo en vivo de ' + project.title">
                   Demo &nearr;
                 </a>
               }
             </div>
+          </header>
+          
+          <!-- Dossier Content -->
+          <div class="dossier-content">
+            <p class="project-desc">{{ project.desc }}</p>
+
+            <!-- Tech Tags -->
+            <div class="tech-bar">
+              @for (t of project.tech; track t) {
+                <span class="badge-gray font-mono">{{ t }}</span>
+              }
+            </div>
+
+            <!-- Inspection Trigger -->
+            <div class="inspect-action">
+              <button class="btn-secondary font-sans" 
+                      (click)="openPreview(project.id, $event)" 
+                      [attr.aria-label]="'Inspeccionar especificación técnica de ' + project.title">
+                <span>Arquitectura &amp; Especificación Técnica</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+            </div>
           </div>
-          
-          <h3 class="project-title">{{ project.title }}</h3>
-          <p class="project-desc">{{ project.desc }}</p>
-          
-          <!-- Tech Stack Tags -->
-          <div class="project-tech">
-            @for (t of project.tech; track t) {
-              <span class="badge-gray">{{ t }}</span>
-            }
-          </div>
-          
-          <!-- Key Metrics Dashboard inside Card -->
-          <div class="project-metrics">
-            @for (metric of project.metrics; track metric.label) {
-              <div class="metric-item">
-                <span class="metric-label">{{ metric.label }}:</span>
-                <span class="metric-value">{{ metric.value }}</span>
-              </div>
-            }
-          </div>
-          
-          <!-- Preview Launch Button -->
-          <button class="btn-secondary width-full mt-4 justify-center" (click)="openPreview(project.id, $event)" [attr.aria-label]="'Ver detalles y arquitectura de ' + project.title">
-            Ver Detalles &amp; Arquitectura
-          </button>
-        </div>
+
+        </article>
       }
     </div>
     
   </div>
 
-  <!-- Detailed Architecture Pop-up Modal -->
+  <!-- Deep Architecture Modal Dialog -->
   @if (activePreviewProjectId) {
     <div class="modal-backdrop" (click)="closePreview()" aria-hidden="true" @fadeInOverlay></div>
     <div class="modal-wrapper">
       <div
         #previewPane
-        class="preview-card-modal glass-panel"
+        class="preview-card-modal editorial-panel"
         role="dialog"
         aria-modal="true"
         tabindex="-1"
-        [attr.aria-label]="'Detalles: ' + (activeProject?.title ?? '')"
+        [attr.aria-label]="'Especificaciones: ' + (activeProject?.title ?? '')"
         @popupModal
       >
-        <!-- Close and Meta -->
+        <!-- Modal Header -->
         <div class="pane-header">
           <div class="pane-meta">
             <span class="badge font-mono">{{ activeProject?.category }}</span>
-            <h3 class="pane-title">{{ activeProject?.title }}</h3>
+            <h3 class="pane-title font-display">{{ activeProject?.title }}</h3>
           </div>
-          <button class="btn-close" (click)="closePreview()" aria-label="Cerrar detalles">
+          <button class="btn-close" (click)="closePreview()" aria-label="Cerrar detalles arquitectónicos">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -97,14 +105,11 @@
         </div>
         
         <div class="pane-body">
-          
-          <!-- Detailed Tech Specifications -->
-          <div class="project-info-sheet font-sans">
-            
+          <div class="project-info-sheet">
             @if (activeProject?.details; as details) {
               <div class="info-block">
                 <div class="info-summary">
-                  <h4>Descripción del Proyecto</h4>
+                  <h4 class="font-mono">RESUMEN DEL SISTEMA //</h4>
                   <p>{{ details.summary }}</p>
                 </div>
                 
@@ -122,23 +127,23 @@
                 </div>
               </div>
             }
-  
+
             <div class="info-actions mt-5 flex gap-4">
               @if (activeProject?.github) {
-                <a [href]="activeProject?.github" target="_blank" rel="noopener noreferrer" class="btn-primary flex items-center justify-center font-mono" [attr.aria-label]="'Ver código fuente de ' + (activeProject?.title ?? '')">
-                  Código Fuente &nearr;
+                <a [href]="activeProject?.github" target="_blank" rel="noopener noreferrer" class="btn-primary flex items-center justify-center font-sans" [attr.aria-label]="'Ver código fuente de ' + (activeProject?.title ?? '')">
+                  Repositorio en GitHub &nearr;
                 </a>
               }
               @if (activeProject?.liveDemo) {
-                <a [href]="activeProject?.liveDemo" target="_blank" rel="noopener noreferrer" class="btn-secondary flex items-center justify-center font-mono" [attr.aria-label]="'Visitar sitio en vivo de ' + (activeProject?.title ?? '')">
-                  Sitio en Vivo &nearr;
+                <a [href]="activeProject?.liveDemo" target="_blank" rel="noopener noreferrer" class="btn-secondary flex items-center justify-center font-sans" [attr.aria-label]="'Visitar sitio en vivo de ' + (activeProject?.title ?? '')">
+                  Despliegue en Vivo &nearr;
                 </a>
               }
             </div>
-  
+
           </div>
-  
         </div>
+
       </div>
     </div>
   }

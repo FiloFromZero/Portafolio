@@ -188,8 +188,8 @@ export class ParticleCanvasComponent implements OnInit, AfterViewInit, OnDestroy
     this.ctx.clearRect(0, 0, width, height);
 
     const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light-theme');
-    const primaryRgb = isLight ? '207, 110, 72' : '240, 180, 155';
-    const secondaryRgb = isLight ? '180, 85, 50' : '224, 111, 36';
+    const primaryRgb = isLight ? '181, 77, 36' : '207, 109, 72';
+    const secondaryRgb = isLight ? '153, 61, 24' : '176, 80, 44';
 
     // 1. Subtle ambient breathing light orbs (deep, quiet depth)
     for (const orb of this.orbs) {
@@ -215,44 +215,13 @@ export class ParticleCanvasComponent implements OnInit, AfterViewInit, OnDestroy
         this.mouse.x, this.mouse.y, 0,
         this.mouse.x, this.mouse.y, 280
       );
-      const spotlightAlpha = isLight ? 0.05 : 0.065;
+      const spotlightAlpha = isLight ? 0.04 : 0.055;
       glowGrad.addColorStop(0, `rgba(${primaryRgb}, ${spotlightAlpha})`);
-      glowGrad.addColorStop(0.5, `rgba(${primaryRgb}, ${spotlightAlpha * 0.3})`);
+      glowGrad.addColorStop(0.5, `rgba(${primaryRgb}, ${spotlightAlpha * 0.25})`);
       glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
       this.ctx.fillStyle = glowGrad;
       this.ctx.fillRect(0, 0, width, height);
-    }
-
-    // 3. Minimalist, ultra-clean precision dot matrix
-    const gridSize = 54;
-    const dotRadius = 0.85;
-    const cols = Math.ceil(width / gridSize);
-    const rows = Math.ceil(height / gridSize);
-
-    for (let c = 0; c <= cols; c++) {
-      for (let r = 0; r <= rows; r++) {
-        const gx = c * gridSize;
-        const gy = r * gridSize;
-
-        let alpha = isLight ? 0.03 : 0.02;
-
-        if (this.mouse.active && this.mouse.x > -1000) {
-          const dx = this.mouse.x - gx;
-          const dy = this.mouse.y - gy;
-          const distSq = dx * dx + dy * dy;
-          if (distSq < 25600) { // 160px radius
-            const dist = Math.sqrt(distSq);
-            const factor = (1 - dist / 160);
-            alpha += factor * (isLight ? 0.12 : 0.14);
-          }
-        }
-
-        this.ctx.beginPath();
-        this.ctx.arc(gx, gy, dotRadius, 0, Math.PI * 2);
-        this.ctx.fillStyle = `rgba(${primaryRgb}, ${alpha})`;
-        this.ctx.fill();
-      }
     }
   }
 }
