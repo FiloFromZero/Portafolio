@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, signal, ChangeDetectionStrategy, NgZone, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, ChangeDetectionStrategy, NgZone, HostListener } from '@angular/core';
 
 import { ParticleCanvasComponent } from './shared/components/particle-canvas/particle-canvas.component';
 import { HeroComponent } from './components/hero/hero.component';
@@ -25,7 +25,7 @@ const THEME_KEY = 'aura-theme';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class App implements OnInit, AfterViewInit, OnDestroy {
+export class App implements OnInit, OnDestroy {
   isLightTheme = signal(false);
   activeSection = signal('hero');
   isMobileMenuOpen = signal(false);
@@ -33,22 +33,19 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   isHeaderScrolled = signal(false);
 
   private readonly sectionIds = ['hero', 'experience', 'tech-stack', 'projects', 'education'];
-  private observer?: IntersectionObserver;
+  private isNavigating = false;
+  private navTimeout?: ReturnType<typeof setTimeout>;
   private scrollCleanups: (() => void)[] = [];
 
   constructor(private ngZone: NgZone) {}
 
   ngOnInit(): void {
     this.loadSavedTheme();
-    this.initScrollProgress();
-  }
-
-  ngAfterViewInit(): void {
-    this.initScrollSpy();
+    this.initScrollEngine();
   }
 
   ngOnDestroy(): void {
-    this.observer?.disconnect();
+    if (this.navTimeout) clearTimeout(this.navTimeout);
     this.scrollCleanups.forEach((fn) => fn());
     this.scrollCleanups = [];
   }
@@ -102,19 +99,34 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   scrollTo(sectionId: string, event?: Event) {
     if (event) event.preventDefault();
     this.closeMobileMenu();
-    const el = document.getElementById(sectionId);
-    if (el) {
-      const headerOffset = 78;
-      const elementPosition = el.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    this.activeSection.set(sectionId);
+
+    // Prevent scrollspy from fluttering across intermediate sections during smooth travel
+    this.isNavigating = true;
+    if (this.navTimeout) clearTimeout(this.navTimeout);
+    this.navTimeout = setTimeout(() => {
+      this.isNavigating = false;
+    }, 850);
+
+    if (sectionId === 'hero') {
       window.scrollTo({
-        top: offsetPosition,
+        top: 0,
         behavior: 'smooth'
       });
-      this.activeSection.set(sectionId);
-      if (typeof history !== 'undefined' && history.pushState) {
-        history.pushState(null, '', '#' + sectionId);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        const headerOffset = 68;
+        const offsetPosition = Math.max(0, el.offsetTop - headerOffset);
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
       }
+    }
+
+    if (typeof history !== 'undefined' && history.pushState) {
+      history.pushState(null, '', '#' + sectionId);
     }
   }
 
@@ -123,42 +135,28 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
     document.documentElement.classList.toggle('light-theme', light);
   }
 
-  private initScrollSpy(): void {
-    if (typeof IntersectionObserver === 'undefined') return;
-
-    this.ngZone.runOutsideAngular(() => {
-      this.observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (visible && this.activeSection() !== visible.target.id) {
-            this.ngZone.run(() => {
-              this.activeSection.set(visible.target.id);
-            });
-          }
-        },
-        { rootMargin: '-15% 0px -45% 0px', threshold: [0, 0.1, 0.25, 0.5] }
-      );
-
-      this.sectionIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) this.observer?.observe(el);
-      });
-    });
-  }
-
-  // Barra de progreso de lectura y compresión del header al hacer scroll.
-  private initScrollProgress(): void {
+  // Unified high-performance scroll engine: reading progress + header state + focal-point scroll spy
+  private initScrollEngine(): void {
     if (typeof window === 'undefined') return;
 
     this.ngZone.runOutsideAngular(() => {
       let ticking = false;
+
       const update = () => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = max > 0 ? window.scrollY / max : 0;
+        const scrollY = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        const maxScroll = docHeight - viewportHeight;
+        const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
+
         this.scrollProgress.set(progress);
-        this.isHeaderScrolled.set(window.scrollY > 12);
+        this.isHeaderScrolled.set(scrollY > 12);
+
+        // Update active navigation section if not in programmatic smooth scroll
+        if (!this.isNavigating) {
+          this.updateActiveSection(scrollY, viewportHeight, docHeight);
+        }
+
         ticking = false;
       };
 
@@ -170,8 +168,46 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
       };
 
       window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
       update();
+
       this.scrollCleanups.push(() => window.removeEventListener('scroll', onScroll));
+      this.scrollCleanups.push(() => window.removeEventListener('resize', onScroll));
     });
+  }
+
+  private updateActiveSection(scrollY: number, viewportHeight: number, docHeight: number): void {
+    // 1. Bottom of page threshold (reaches education cleanly)
+    if (scrollY + viewportHeight >= docHeight - 40) {
+      if (this.activeSection() !== 'education') {
+        this.activeSection.set('education');
+      }
+      return;
+    }
+
+    // 2. Top of page threshold (reaches hero cleanly)
+    if (scrollY < 140) {
+      if (this.activeSection() !== 'hero') {
+        this.activeSection.set('hero');
+      }
+      return;
+    }
+
+    // 3. Focal zone tracking (calibrated at 35% from the top of the viewport)
+    const focalPoint = scrollY + viewportHeight * 0.35;
+    let currentSection = 'hero';
+
+    for (let i = this.sectionIds.length - 1; i >= 0; i--) {
+      const id = this.sectionIds[i];
+      const el = document.getElementById(id);
+      if (el && focalPoint >= el.offsetTop) {
+        currentSection = id;
+        break;
+      }
+    }
+
+    if (this.activeSection() !== currentSection) {
+      this.activeSection.set(currentSection);
+    }
   }
 }

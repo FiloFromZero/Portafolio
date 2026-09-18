@@ -169,23 +169,23 @@
   }
 }
 
-// Responsive visibility helpers
+// Responsive visibility helpers (Unified 1024px breakpoint to prevent dock overlap on tablets & laptops)
 .desktop-only {
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: none !important;
   }
 }
 
 .mobile-only {
   display: none;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: flex !important;
   }
 }
 
 header.mobile-only {
   display: none;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: block !important;
   }
 }
@@ -218,30 +218,30 @@ header.mobile-only {
   }
 }
 
-// Subtle interactive peek tab on the left screen edge
+// Subtle interactive peek tab on the left screen edge (Centered vertically)
 .dock-peek-trigger {
   position: fixed;
   left: 0;
   top: 50%;
-  transform: translateY(-50%) translateX(0);
+  transform: translateY(-50%);
   z-index: 151;
   pointer-events: auto;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
   .peek-tab {
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px 12px 8px 9px;
+    gap: 6px;
+    padding: 7px 11px 7px 8px;
     background: var(--dock-bg);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--dock-border);
     border-left: none;
     border-radius: 0 9999px 9999px 0;
-    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
-    transition: all 0.25s ease;
+    box-shadow: 3px 0 14px rgba(0, 0, 0, 0.12);
+    transition: all 0.22s ease;
 
     .peek-menu-icon {
       color: var(--accent-primary);
@@ -250,9 +250,9 @@ header.mobile-only {
     }
 
     .peek-text {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       color: var(--text-primary);
       text-transform: uppercase;
       line-height: 1;
@@ -261,7 +261,7 @@ header.mobile-only {
 
     .peek-chevron {
       color: var(--accent-primary);
-      transition: transform 0.25s ease;
+      transition: transform 0.2s ease;
       animation: nudgeRight 2.2s infinite ease-in-out;
       flex-shrink: 0;
     }
@@ -270,8 +270,8 @@ header.mobile-only {
   &:hover .peek-tab {
     background: rgba(var(--accent-primary-rgb), 0.16);
     border-color: var(--accent-primary);
-    padding-left: 11px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 14px;
 
     .peek-text {
       color: var(--accent-primary);
@@ -442,7 +442,7 @@ header.mobile-only {
 .mobile-nav-drawer {
   display: none;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -563,7 +563,7 @@ header.mobile-only {
   flex-wrap: wrap;
   gap: 1.5rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
@@ -627,9 +627,9 @@ header.mobile-only {
 
   &:hover {
     border-color: var(--accent-primary);
-    color: var(--accent-primary);
-    background: rgba(var(--accent-primary-rgb), 0.06);
-    transform: translateY(-1px);
+    color: var(--accent-light);
+    background: rgba(var(--accent-primary-rgb), 0.1);
+    box-shadow: 0 0 14px 0 rgba(var(--accent-primary-rgb), 0.16);
   }
 }
 
