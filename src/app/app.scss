@@ -13,7 +13,195 @@
   will-change: transform;
 }
 
-// Minimalist Header
+// Responsive visibility helpers (Unified 1024px breakpoint)
+.desktop-only {
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.mobile-only {
+  display: none;
+  @media (max-width: 1024px) {
+    display: flex !important;
+  }
+}
+
+header.mobile-only {
+  display: none;
+  @media (max-width: 1024px) {
+    display: block !important;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 1. UBUNTU-STYLE DOCK (Desktop: siempre visible, sin peek ni drop)
+// ---------------------------------------------------------------------------
+.ubuntu-dock-wrapper {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+}
+
+.ubuntu-dock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: clamp(470px, 66vh, 580px);
+  padding: 1.35rem 0.75rem;
+  background: var(--dock-bg);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--dock-border);
+  border-left: none;
+  border-radius: 0 20px 20px 0;
+  box-shadow: 12px 0 36px rgba(0, 0, 0, 0.16);
+
+  .dock-app-launcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: rgba(var(--accent-primary-rgb), 0.14);
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.92rem;
+    transition: var(--transition-smooth);
+
+    &:hover {
+      background: var(--accent-primary);
+      color: var(--btn-primary-text);
+      transform: scale(1.08);
+
+      .dock-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
+      }
+    }
+  }
+
+  .dock-divider {
+    width: 26px;
+    height: 1px;
+    background: var(--border-normal);
+    margin: 0.3rem 0;
+  }
+
+  .dock-apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.05rem;
+    margin: auto 0;
+  }
+
+  .dock-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+
+    .running-pip {
+      position: absolute;
+      left: -13px;
+      width: 3.5px;
+      height: 18px;
+      border-radius: 0 4px 4px 0;
+      background: transparent;
+      transition: all 0.25s ease;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      color: var(--accent-primary);
+      background: rgba(var(--accent-primary-rgb), 0.12);
+      transform: scale(1.08);
+
+      .dock-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
+      }
+    }
+
+    &.active {
+      color: var(--accent-primary);
+      background: rgba(var(--accent-primary-rgb), 0.16);
+
+      .running-pip {
+        background: var(--accent-primary);
+        box-shadow: 0 0 8px var(--accent-primary);
+      }
+    }
+  }
+
+  .theme-btn {
+    margin-top: auto;
+  }
+
+  .lang-btn {
+    .dock-lang-badge {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      padding: 0.2rem 0.4rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-normal);
+      transition: var(--transition-smooth);
+    }
+
+    &:hover .dock-lang-badge {
+      color: var(--accent-primary);
+      border-color: var(--accent-primary);
+      background: rgba(var(--accent-primary-rgb), 0.14);
+    }
+  }
+
+  .dock-tooltip {
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-6px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-normal);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 2. MINIMALIST HEADER (Mobile Only)
+// ---------------------------------------------------------------------------
 .hud-header {
   position: sticky;
   top: 0;
@@ -39,7 +227,6 @@
   justify-content: space-between;
   align-items: center;
   min-height: 58px;
-  transition: padding 0.25s ease;
 }
 
 .hud-brand {
@@ -69,43 +256,6 @@
       transform: scale(1.06);
     }
   }
-
-  .brand-name {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: -0.015em;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: var(--accent-primary);
-    }
-  }
-}
-
-.hud-nav {
-  display: flex;
-  gap: 2.2rem;
-  align-items: center;
-
-  .nav-link {
-    font-family: var(--font-sans);
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.92rem;
-    font-weight: 400;
-    transition: var(--transition-smooth);
-
-    &:hover {
-      color: var(--text-primary);
-    }
-
-    &.active {
-      color: var(--accent-primary);
-      font-weight: 600;
-    }
-  }
 }
 
 .hud-actions {
@@ -114,8 +264,8 @@
   gap: 0.5rem;
 }
 
-// Minimal Theme switch button
-.theme-toggle-btn {
+// Minimal Mobile Theme switch button
+.mobile-theme-btn {
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-secondary);
@@ -215,284 +365,6 @@
     }
   }
 }
-
-// Responsive visibility helpers (Unified 1024px breakpoint to prevent dock overlap on tablets & laptops)
-.desktop-only {
-  @media (max-width: 1024px) {
-    display: none !important;
-  }
-}
-
-.mobile-only {
-  display: none;
-  @media (max-width: 1024px) {
-    display: flex !important;
-  }
-}
-
-header.mobile-only {
-  display: none;
-  @media (max-width: 1024px) {
-    display: block !important;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// 1. UBUNTU-STYLE AUTO-REVEAL DOCK (Desktop)
-// ---------------------------------------------------------------------------
-.ubuntu-dock-wrapper {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 24px;
-  z-index: 150;
-  transition: width 0.2s ease;
-
-  &:hover {
-    width: 80px;
-
-    .ubuntu-dock {
-      transform: translateY(-50%) translateX(0);
-      box-shadow: 14px 0 45px rgba(0, 0, 0, 0.22);
-    }
-
-    .dock-peek-trigger {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-50%) translateX(-10px);
-    }
-  }
-}
-
-// Subtle interactive peek tab on the left screen edge (Centered vertically)
-.dock-peek-trigger {
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 151;
-  pointer-events: auto;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-
-  .peek-tab {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 11px 7px 8px;
-    background: var(--dock-bg);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid var(--dock-border);
-    border-left: none;
-    border-radius: 0 9999px 9999px 0;
-    box-shadow: 3px 0 14px rgba(0, 0, 0, 0.12);
-    transition: all 0.22s ease;
-
-    .peek-menu-icon {
-      color: var(--accent-primary);
-      flex-shrink: 0;
-      stroke-width: 2.2;
-    }
-
-    .peek-text {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      line-height: 1;
-      transition: color 0.2s ease;
-    }
-
-    .peek-chevron {
-      color: var(--accent-primary);
-      transition: transform 0.2s ease;
-      animation: nudgeRight 2.2s infinite ease-in-out;
-      flex-shrink: 0;
-    }
-  }
-
-  &:hover .peek-tab {
-    background: rgba(var(--accent-primary-rgb), 0.16);
-    border-color: var(--accent-primary);
-    padding-left: 10px;
-    padding-right: 14px;
-
-    .peek-text {
-      color: var(--accent-primary);
-    }
-  }
-}
-
-@keyframes nudgeRight {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(3px);
-  }
-}
-
-// Ubuntu Dock Bar (Refined & balanced proportions)
-.ubuntu-dock {
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%) translateX(-100%);
-  z-index: 152;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: clamp(470px, 66vh, 580px);
-  padding: 1.35rem 0.75rem;
-  background: var(--dock-bg);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid var(--dock-border);
-  border-left: none;
-  border-radius: 0 20px 20px 0;
-  box-shadow: 12px 0 36px rgba(0, 0, 0, 0.13);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-
-  .dock-app-launcher {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 11px;
-    background: rgba(var(--accent-primary-rgb), 0.14);
-    color: var(--accent-primary);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 0.92rem;
-    transition: var(--transition-smooth);
-
-    &:hover {
-      background: var(--accent-primary);
-      color: var(--btn-primary-text);
-      transform: scale(1.08);
-
-      .dock-tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(-50%) translateX(0);
-      }
-    }
-  }
-
-  .dock-divider {
-    width: 26px;
-    height: 1px;
-    background: var(--border-normal);
-    margin: 0.3rem 0;
-  }
-
-  .dock-apps-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.05rem;
-    margin: auto 0;
-  }
-
-  .dock-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 11px;
-    color: var(--text-secondary);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: var(--transition-smooth);
-
-    .running-pip {
-      position: absolute;
-      left: -13px;
-      width: 3.5px;
-      height: 18px;
-      border-radius: 0 4px 4px 0;
-      background: transparent;
-      transition: all 0.25s ease;
-    }
-
-    svg {
-      width: 20px;
-      height: 20px;
-      transition: transform 0.2s ease;
-    }
-
-    &:hover {
-      color: var(--accent-primary);
-      background: rgba(var(--accent-primary-rgb), 0.12);
-      transform: scale(1.08);
-
-      .dock-tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(-50%) translateX(0);
-      }
-    }
-
-    &.active {
-      color: var(--accent-primary);
-      background: rgba(var(--accent-primary-rgb), 0.16);
-
-      .running-pip {
-        background: var(--accent-primary);
-        box-shadow: 0 0 8px var(--accent-primary);
-      }
-    }
-  }
-
-  .lang-btn {
-    .dock-lang-badge {
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      color: var(--text-primary);
-      padding: 0.2rem 0.4rem;
-      border-radius: 6px;
-      border: 1px solid var(--border-normal);
-      transition: var(--transition-smooth);
-    }
-
-    &:hover .dock-lang-badge {
-      color: var(--accent-primary);
-      border-color: var(--accent-primary);
-      background: rgba(var(--accent-primary-rgb), 0.14);
-    }
-  }
-
-  .dock-tooltip {
-    position: absolute;
-    left: calc(100% + 14px);
-    top: 50%;
-    transform: translateY(-50%) translateX(-6px);
-    background: var(--bg-card);
-    color: var(--text-primary);
-    border: 1px solid var(--border-normal);
-    padding: 0.4rem 0.8rem;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-}
-
-
 
 // Mobile Navigation Drawer
 .mobile-nav-backdrop {

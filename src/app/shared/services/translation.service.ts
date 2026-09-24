@@ -1632,11 +1632,9 @@ export class TranslationService {
       document.documentElement.lang = saved;
       return;
     }
-    // Check browser language
-    const browserLang = navigator.language?.toLowerCase() || '';
-    const initial: Language = browserLang.startsWith('es') ? 'es' : 'en';
-    this.currentLang.set(initial);
-    document.documentElement.lang = initial;
+    // Español como idioma predeterminado
+    this.currentLang.set('es');
+    document.documentElement.lang = 'es';
   }
 
   setLanguage(lang: Language): void {

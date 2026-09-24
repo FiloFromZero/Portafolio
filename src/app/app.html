@@ -4,23 +4,8 @@
 <!-- Subtle Scroll Progress Bar -->
 <div class="scroll-progress" [style.transform]="'scaleX(' + scrollProgress() + ')'" aria-hidden="true"></div>
 
-<!-- 1. UBUNTU-STYLE AUTO-REVEAL DOCK (Desktop Only) -->
+<!-- 1. UBUNTU-STYLE DOCK (Desktop Only - Siempre visible, sin pestaña ni drop) -->
 <aside class="ubuntu-dock-wrapper desktop-only" [attr.aria-label]="t().nav.dockLabel">
-  <!-- Interactive Left Edge Peek Indicator with "MENÚ" -->
-  <div class="dock-peek-trigger" [attr.aria-label]="t().nav.dockLabel">
-    <div class="peek-tab">
-      <svg class="peek-menu-icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-      <span class="peek-text font-mono">{{ t().nav.menu }}</span>
-      <svg class="peek-chevron" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    </div>
-  </div>
-
   <!-- The Ubuntu Dock Menu (Transparent Frosted Glass) -->
   <nav class="ubuntu-dock" [attr.aria-label]="t().nav.dockLabel">
     <!-- Brand Avatar / App Launcher (Ubuntu Style) -->
@@ -87,18 +72,18 @@
 <!-- Minimalist Header (Mobile Only) -->
 <header class="hud-header mobile-only" [class.is-scrolled]="isHeaderScrolled()">
   <div class="hud-container">
-    <!-- Clean Minimalist Monogram Brand (No long name in mobile navbar) -->
+    <!-- Clean Minimalist Monogram Brand (Mobile) -->
     <a href="#hero" class="hud-brand" (click)="scrollTo('hero', $event)" [attr.aria-label]="t().nav.homeAria">
       <span class="brand-monogram font-display">MM</span>
     </a>
-    
+
     <div class="hud-actions">
-      <!-- Quick Language Switch (Mobile Only) -->
+      <!-- Quick Language Switch (Mobile) -->
       <button class="lang-toggle-btn mobile-lang-btn font-mono" (click)="toggleLanguage()" [attr.aria-label]="t().nav.langToggleAria">
         <span class="lang-code">{{ currentLang().toUpperCase() }}</span>
       </button>
 
-      <!-- Quick Theme Switch (Mobile Only) -->
+      <!-- Quick Theme Switch (Mobile) -->
       <button class="theme-toggle-btn mobile-theme-btn" (click)="toggleTheme()" [attr.aria-label]="isLightTheme() ? t().nav.themeDark : t().nav.themeLight">
         @if (isLightTheme()) {
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon sun"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
