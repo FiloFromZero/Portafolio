@@ -74,11 +74,7 @@
     font-weight: 800;
     line-height: 1.04;
     letter-spacing: -0.035em;
-    background: linear-gradient(125deg, var(--text-primary) 30%, var(--accent-light) 75%, var(--accent-primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 4px 28px rgba(var(--accent-primary-rgb), 0.16));
+    color: var(--text-primary);
     margin-bottom: 0.15rem;
   }
 
@@ -91,10 +87,7 @@
 
     .text-accent {
       color: var(--accent-primary);
-      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-light) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-weight: 700;
     }
   }
 
@@ -135,21 +128,52 @@
   }
 }
 
-// Minimalist Tech Line (Clean typography)
+// Minimalist Tech Line with Badges
 .hero-stack-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.3rem;
   line-height: 1.6;
 
   .stack-lbl {
     color: var(--accent-primary);
     font-weight: 600;
-    margin-right: 6px;
+    margin-right: 2px;
+  }
+
+  .stack-chips-group {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .stack-chip {
+    font-size: 0.74rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-normal);
+    transition: var(--transition-smooth);
+    user-select: none;
+
+    &:hover {
+      border-color: var(--border-glow);
+      color: var(--accent-light);
+    }
   }
 
   @media (max-width: 1024px) {
+    justify-content: center;
     text-align: center;
+
+    .stack-chips-group {
+      justify-content: center;
+    }
   }
 }
 
@@ -361,7 +385,7 @@
   }
 
   .quote-symbol {
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: var(--font-display);
     font-size: 4rem;
     line-height: 0.75;
     color: var(--accent-primary);
@@ -440,7 +464,7 @@
 
   svg {
     stroke: var(--accent-primary);
-    transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &.back {
@@ -542,32 +566,30 @@
   }
 
   .chevron-down {
-    animation: bounceDown 1.8s infinite ease-in-out;
+    animation: scrollGlide 2.2s infinite ease-in-out;
     transition: stroke 0.3s ease;
   }
 }
 
 @keyframes scrollAnim {
-  0% {
-    opacity: 1;
+  0%, 100% {
+    opacity: 0.9;
     transform: translateY(0);
   }
   50% {
-    opacity: 0.3;
-    transform: translateY(7px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0.35;
+    transform: translateY(6px);
   }
 }
 
-@keyframes bounceDown {
+@keyframes scrollGlide {
   0%, 100% {
+    opacity: 0.7;
     transform: translateY(0);
   }
   50% {
-    transform: translateY(4px);
+    opacity: 1;
+    transform: translateY(3px);
   }
 }
 

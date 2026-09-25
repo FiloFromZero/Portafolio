@@ -20,10 +20,17 @@
       <!-- Value Proposition Summary -->
       <p class="hero-lead" appScrollReveal revealAnimation="fade-up" [revealDelay]="120" [innerHTML]="t().hero.leadHtml"></p>
 
-      <!-- Minimalist Core Stack Line (Clean text, no boxes) -->
+      <!-- Minimalist Core Stack Line with Scannable Badges -->
       <div class="hero-stack-line font-mono" appScrollReveal revealAnimation="fade-up" [revealDelay]="160">
         <span class="stack-lbl">{{ t().hero.stackLabel }}</span>
-        <span>Java 21 &bull; Spring Boot 3 &bull; Angular 19 &bull; AWS ECS &bull; Terraform &bull; PostGIS</span>
+        <div class="stack-chips-group">
+          <span class="stack-chip">Java 21</span>
+          <span class="stack-chip">Spring Boot 3</span>
+          <span class="stack-chip">Angular 21</span>
+          <span class="stack-chip">AWS ECS</span>
+          <span class="stack-chip">Terraform</span>
+          <span class="stack-chip">PostGIS</span>
+        </div>
       </div>
 
       <!-- Action Buttons -->

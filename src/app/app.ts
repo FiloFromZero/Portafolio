@@ -85,6 +85,26 @@ export class App implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    const target = event.target as HTMLElement | null;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+      return;
+    }
+
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+    const key = event.key;
+    if (key >= '1' && key <= '5') {
+      const index = parseInt(key, 10) - 1;
+      if (this.sectionIds[index]) {
+        this.scrollTo(this.sectionIds[index]);
+      }
+    } else if (key === 't' || key === 'T') {
+      this.toggleTheme();
+    }
+  }
+
   toggleMobileMenu() {
     const newState = !this.isMobileMenuOpen();
     this.isMobileMenuOpen.set(newState);

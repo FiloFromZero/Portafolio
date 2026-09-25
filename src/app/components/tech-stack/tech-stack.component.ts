@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, computed, HostListener, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, computed, HostListener, inject, OnDestroy } from '@angular/core';
 import { fadeInOverlay, popupModal } from '../../shared/animations/animations';
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal.directive';
 import { TranslationService, TechItemTranslation, RoleCategoryTranslation } from '../../shared/services/translation.service';
@@ -79,10 +79,20 @@ export class TechStackComponent {
 
   openTechPopup(tech: TechItem): void {
     this.selectedTech.set(tech);
+    this.lockBodyScroll(true);
+    setTimeout(() => {
+      (document.querySelector('.modal-close-btn') as HTMLElement)?.focus();
+    }, 60);
   }
 
   closeTechPopup(): void {
     this.selectedTech.set(null);
+    this.lockBodyScroll(false);
+  }
+
+  private lockBodyScroll(lock: boolean): void {
+    if (typeof document === 'undefined') return;
+    document.body.style.overflow = lock ? 'hidden' : '';
   }
 
   @HostListener('document:keydown.escape')
@@ -90,6 +100,36 @@ export class TechStackComponent {
     if (this.selectedTech()) {
       this.closeTechPopup();
     }
+  }
+
+  @HostListener('document:keydown.tab', ['$event'])
+  onTabKey(event: Event): void {
+    if (!this.selectedTech()) return;
+    const keyEvent = event as KeyboardEvent;
+    const modalEl = document.querySelector('.tech-modal');
+    if (!modalEl) return;
+    const focusable = modalEl.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (keyEvent.shiftKey) {
+      if (document.activeElement === first || !modalEl.contains(document.activeElement)) {
+        last.focus();
+        keyEvent.preventDefault();
+      }
+    } else {
+      if (document.activeElement === last || !modalEl.contains(document.activeElement)) {
+        first.focus();
+        keyEvent.preventDefault();
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.lockBodyScroll(false);
   }
 
   scrollToProject(projectId: string, event?: Event): void {

@@ -40,7 +40,8 @@
                   (click)="openTechPopup(tech)"
                   [title]="tech.name">
             <div class="pill-icon-box">
-              <img [src]="tech.logoUrl" 
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E"
+                   [src]="tech.logoUrl" 
                    [alt]="tech.name + ' logo'" 
                    class="pill-icon" 
                    width="18" 
@@ -80,7 +81,7 @@
         <header class="modal-header">
           <div class="header-main">
             <div class="modal-icon-box">
-              <img [src]="tech.logoUrl" [alt]="tech.name + ' logo'" width="28" height="28" loading="lazy" decoding="async">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" [src]="tech.logoUrl" [alt]="tech.name + ' logo'" width="28" height="28" loading="lazy" decoding="async">
             </div>
             <div class="header-titles">
               <div class="cat-tag font-mono">{{ tech.categoryLabel }} &bull; {{ tech.tag }}</div>

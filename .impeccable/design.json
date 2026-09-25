@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T22:35:20Z",
+  "title": "Design System: Aura",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Burnt Terracotta",
+        "canonical": "#cf6d48"
+      },
+      "primary-light": {
+        "role": "primary",
+        "displayName": "Soft Copper",
+        "canonical": "#e09477"
+      },
+      "primary-deep": {
+        "role": "primary",
+        "displayName": "Deep Terracotta",
+        "canonical": "#b0502c"
+      },
+      "bg-primary": {
+        "role": "neutral",
+        "displayName": "Warm Basalt",
+        "canonical": "#141210"
+      },
+      "bg-secondary": {
+        "role": "neutral",
+        "displayName": "Basalto Secundario",
+        "canonical": "#1c1916"
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Raw Linen",
+        "canonical": "#f6f1ec"
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Pumice Stone",
+        "canonical": "#a69a8f"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Protagonist hero headlines and candidate name."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Narrative, project descriptions and job highlights."
+      },
+      "label": {
+        "displayName": "Label / Monospace",
+        "purpose": "Badges, tech stack chips, timestamps and code."
+      }
+    },
+    "shadows": [
+      {
+        "name": "dock-elevation",
+        "value": "12px 0 36px rgba(0, 0, 0, 0.16)",
+        "purpose": "Fixed Ubuntu side dock elevation."
+      },
+      {
+        "name": "accent-glow",
+        "value": "0 0 20px 0 rgba(207, 109, 72, 0.4)",
+        "purpose": "Active focus and hover state radiant aura."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transition-smooth",
+        "value": "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Smooth microinteractions and state transitions."
+      },
+      {
+        "name": "transition-bounce",
+        "value": "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+        "purpose": "Expressive toggle animations."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "desktop-dock",
+        "value": "1024px"
+      }
+    ]
+  }
+}

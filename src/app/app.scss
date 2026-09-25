@@ -75,10 +75,13 @@ header.mobile-only {
     font-size: 0.92rem;
     transition: var(--transition-smooth);
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background: var(--accent-primary);
       color: var(--btn-primary-text);
       transform: scale(1.08);
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 3px;
 
       .dock-tooltip {
         opacity: 1;
@@ -133,10 +136,13 @@ header.mobile-only {
       transition: transform 0.2s ease;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: var(--accent-primary);
       background: rgba(var(--accent-primary-rgb), 0.12);
       transform: scale(1.08);
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 3px;
 
       .dock-tooltip {
         opacity: 1;
@@ -196,6 +202,19 @@ header.mobile-only {
     pointer-events: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .dock-kbd {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 0.12rem 0.38rem;
+      font-size: 0.68rem;
+      border-radius: 4px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-light);
+      color: var(--accent-light);
+      line-height: 1;
+      font-weight: 600;
+    }
   }
 }
 

@@ -61,15 +61,25 @@
   --border-light: rgba(31, 25, 21, 0.15);
 }
 
-// Respect user preference for reduced motion
+// Respect user preference for reduced motion (preserving state feedback)
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  // Preserve gentle, accessible state feedback (opacity, color) without spatial translation
+  body,
+  button,
+  a,
+  input,
+  .dock-item,
+  .btn-primary,
+  .btn-secondary {
+    transition-duration: 0.15s !important;
   }
 }
 
