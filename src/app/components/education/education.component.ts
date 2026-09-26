@@ -18,6 +18,7 @@ export class EducationComponent {
 
   readonly educationList = computed(() => this.t().education.educationList);
   readonly certificationsList = computed(() => this.t().education.certificationsList);
+  readonly badgesList = computed(() => this.t().education.badgesList);
 
   constructor() {}
 }

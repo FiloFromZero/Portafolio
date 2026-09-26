@@ -155,15 +155,27 @@ export interface CertificationItemTranslation {
   verificationUrl?: string;
 }
 
+export interface BadgeItemTranslation {
+  name: string;
+  issuer: string;
+  date: string;
+  description: string;
+  platform: 'credly' | 'aws' | 'google' | 'microsoft' | 'other';
+  badgeImageUrl: string;
+  verificationUrl: string;
+}
+
 export interface EducationTranslations {
   title: string;
   subtitle: string;
   universityColTitle: string;
   certsColTitle: string;
+  badgesColTitle: string;
   verifyBtn: string;
   verifyAria: string;
   educationList: EducationItemTranslation[];
   certificationsList: CertificationItemTranslation[];
+  badgesList: BadgeItemTranslation[];
 }
 
 export interface FooterTranslations {
@@ -867,6 +879,7 @@ export class TranslationService {
         subtitle: 'Acreditación universitaria en ingeniería de sistemas y credenciales técnicas oficiales de especialización.',
         universityColTitle: 'Grado Universitario',
         certsColTitle: 'Certificaciones Oficiales',
+        badgesColTitle: 'Credenciales & Badges',
         verifyBtn: 'Verificar',
         verifyAria: 'Verificar credencial oficial:',
         educationList: [
@@ -892,6 +905,17 @@ export class TranslationService {
             date: '2025',
             credentialId: 'UC-f5003ac4-8865-4fb6-aa13-1b7d5fa25c23',
             verificationUrl: 'https://udemy-certificate.s3.amazonaws.com/pdf/UC-f5003ac4-8865-4fb6-aa13-1b7d5fa25c23.pdf'
+          }
+        ],
+        badgesList: [
+          {
+            name: 'AWS SimuLearn — Cloud Practitioner',
+            issuer: 'Amazon Web Services',
+            date: '2026',
+            description: 'Conocimiento fundamental de AWS Cloud: cómputo, redes, base de datos y servicios de seguridad. Experiencia práctica construyendo soluciones con servicios AWS esenciales.',
+            platform: 'credly',
+            badgeImageUrl: 'images/AWS.png',
+            verificationUrl: 'https://www.credly.com/badges/01509a65-d723-455e-b397-07ae50215a85'
           }
         ]
       },
@@ -1579,6 +1603,7 @@ export class TranslationService {
         subtitle: 'University degree in Systems Engineering and official specialized technical credentials.',
         universityColTitle: 'University Degree',
         certsColTitle: 'Official Certifications',
+        badgesColTitle: 'Credentials & Badges',
         verifyBtn: 'Verify',
         verifyAria: 'Verify official credential:',
         educationList: [
@@ -1604,6 +1629,17 @@ export class TranslationService {
             date: '2025',
             credentialId: 'UC-f5003ac4-8865-4fb6-aa13-1b7d5fa25c23',
             verificationUrl: 'https://udemy-certificate.s3.amazonaws.com/pdf/UC-f5003ac4-8865-4fb6-aa13-1b7d5fa25c23.pdf'
+          }
+        ],
+        badgesList: [
+          {
+            name: 'AWS SimuLearn — Cloud Practitioner',
+            issuer: 'Amazon Web Services',
+            date: '2026',
+            description: 'Foundational AWS Cloud knowledge: compute, networking, database and security services. Hands-on experience building solutions with core AWS services.',
+            platform: 'credly',
+            badgeImageUrl: 'images/AWS.png',
+            verificationUrl: 'https://www.credly.com/badges/01509a65-d723-455e-b397-07ae50215a85'
           }
         ]
       },
